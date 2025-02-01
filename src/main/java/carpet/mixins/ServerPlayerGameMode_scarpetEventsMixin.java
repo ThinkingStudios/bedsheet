@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,10 +41,10 @@ public class ServerPlayerGameMode_scarpetEventsMixin implements ServerPlayerInte
 
     @Inject(method = "destroyBlock", locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true, at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/server/level/ServerLevel;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z",
+            target = "Lnet/minecraft/server/level/ServerPlayerGameMode;removeBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Z",
             shift = At.Shift.BEFORE
     ))
-    private void onBlockBroken(final BlockPos blockPos, final CallbackInfoReturnable<Boolean> cir, final BlockEntity blockEntity, final Block block, final BlockState blockState)
+    private void onBlockBroken(final BlockPos blockPos, final CallbackInfoReturnable<Boolean> cir, final BlockState blockstate1, final BlockEvent.BreakEvent event, final BlockEntity blockentity, final Block block, final BlockState blockState)
     {
         if(PLAYER_BREAK_BLOCK.onBlockBroken(player, blockPos, blockState)) {
             this.level.sendBlockUpdated(blockPos, blockState, blockState, 3);

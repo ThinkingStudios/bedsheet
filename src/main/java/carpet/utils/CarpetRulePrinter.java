@@ -5,9 +5,8 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import joptsimple.util.PathConverter;
-import joptsimple.util.PathProperties;
-import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
+//import net.fabricmc.api.DedicatedServerModInitializer;
+//import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -18,6 +17,7 @@ import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.thinkingstudio.sheet.util.NeoHelper;
 
 /**
  * Provides a command line interface to generate a dump with all rules
@@ -25,12 +25,11 @@ import org.slf4j.LoggerFactory;
  * category filter
  *
  */
-public class CarpetRulePrinter implements DedicatedServerModInitializer {
-    @Override
-    public void onInitializeServer() {
+public class CarpetRulePrinter /*implements DedicatedServerModInitializer*/ {
+    public static void onInitializeServer() {
         // When launching, we use the "--" separator to prevent the game rejecting to launch because of unknown options
         // Clear it in case it's present given else our option parser would also ignore them!
-        String[] args = Arrays.stream(FabricLoader.getInstance().getLaunchArguments(true)).filter(opt -> !opt.equals("--")).toArray(String[]::new);
+        String[] args = Arrays.stream(NeoHelper.getLaunchArguments(true)).filter(opt -> !opt.equals("--")).toArray(String[]::new);
 
         // Prepare an OptionParser for our parameters
         OptionParser parser = new OptionParser();

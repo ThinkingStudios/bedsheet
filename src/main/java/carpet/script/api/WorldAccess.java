@@ -50,7 +50,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.Ticket;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.ServerExplosion;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -100,10 +99,12 @@ import net.minecraft.world.entity.ai.village.poi.PoiRecord;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -148,7 +149,7 @@ public class WorldAccess
         DIRECTION_MAP.put("x", Direction.EAST);
     }
 
-    private static final Map<String, TicketType> ticketTypes = Map.of(
+    private static final Map<String, TicketType<?>> ticketTypes = Map.of(
             "portal", TicketType.PORTAL,
             "teleport", TicketType.ENDER_PEARL,
             "unknown", TicketType.UNKNOWN
@@ -645,7 +646,7 @@ public class WorldAccess
         {
             ServerLevel world = ((CarpetContext) c).level();
             DistanceManager foo = world.getChunkSource().chunkMap.getDistanceManager();
-            Long2ObjectOpenHashMap<List<Ticket>> levelTickets = Vanilla.ChunkTicketManager_getTicketsByPosition(foo);
+            Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>> levelTickets = Vanilla.ChunkTicketManager_getTicketsByPosition(foo);
 
             List<Value> res = new ArrayList<>();
             if (lv.isEmpty())
@@ -653,7 +654,7 @@ public class WorldAccess
                 for (long key : levelTickets.keySet())
                 {
                     ChunkPos chpos = new ChunkPos(key);
-                    for (Ticket ticket : levelTickets.get(key))
+                    for (Ticket<?> ticket : levelTickets.get(key))
                     {
                         res.add(ListValue.of(
                                 new StringValue(ticket.getType().toString()),
@@ -668,10 +669,10 @@ public class WorldAccess
             {
                 BlockArgument blockArgument = BlockArgument.findIn((CarpetContext) c, lv, 0);
                 BlockPos pos = blockArgument.block.getPos();
-                List<Ticket> tickets = levelTickets.get(new ChunkPos(pos).toLong());
+                SortedArraySet<Ticket<?>> tickets = levelTickets.get(new ChunkPos(pos).toLong());
                 if (tickets != null)
                 {
-                    for (Ticket ticket : tickets)
+                    for (Ticket<?> ticket : tickets)
                     {
                         res.add(ListValue.of(
                                 new StringValue(ticket.getType().toString()),
@@ -818,7 +819,8 @@ public class WorldAccess
             Boolean[] result = new Boolean[]{true};
             cc.server().executeBlocking(() ->
             {
-                boolean success = world.setBlock(targetPos, finalSourceBlockState, Block.UPDATE_CLIENTS  | Block.UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS );
+                Clearable.tryClear(world.getBlockEntity(targetPos));
+                boolean success = world.setBlock(targetPos, finalSourceBlockState, 2);
                 if (finalData != null)
                 {
                     BlockEntity be = world.getBlockEntity(targetPos);
@@ -912,11 +914,11 @@ public class WorldAccess
                 //postMine() durability from item classes
                 float hardness = state.getDestroySpeed(world, where);
                 int damageAmount = 0;
-                if ((tool.is(ItemTags.PICKAXES) && hardness > 0.0) || item instanceof ShearsItem)
+                if ((item instanceof DiggerItem && hardness > 0.0) || item instanceof ShearsItem)
                 {
                     damageAmount = 1;
                 }
-                else if (item instanceof TridentItem || tool.is(ItemTags.SWORDS))
+                else if (item instanceof TridentItem || item instanceof SwordItem)
                 {
                     damageAmount = 2;
                 }
@@ -1676,7 +1678,7 @@ public class WorldAccess
                 throw new InternalExpressionException("'add_chunk_ticket' requires block position, ticket type and radius");
             }
             String type = lv.get(locator.offset).getString();
-            TicketType ticket = ticketTypes.get(type.toLowerCase(Locale.ROOT));
+            TicketType<?> ticket = ticketTypes.get(type.toLowerCase(Locale.ROOT));
             if (ticket == null)
             {
                 throw new InternalExpressionException("Unknown ticket type: " + type);
@@ -1690,15 +1692,15 @@ public class WorldAccess
             ChunkPos target = new ChunkPos(pos);
             if (ticket == TicketType.PORTAL) // portal
             {
-                cc.level().getChunkSource().addTicketWithRadius(TicketType.PORTAL, target, radius);
+                cc.level().getChunkSource().addRegionTicket(TicketType.PORTAL, target, radius, pos);
             }
             else if (ticket == TicketType.ENDER_PEARL) // post teleport
             {
-                cc.level().getChunkSource().addTicketWithRadius(TicketType.ENDER_PEARL, target, radius);
+                cc.level().getChunkSource().addRegionTicket(TicketType.ENDER_PEARL, target, radius, target);
             }
             else
             {
-                cc.level().getChunkSource().addTicketWithRadius(TicketType.UNKNOWN, target, radius);
+                cc.level().getChunkSource().addRegionTicket(TicketType.UNKNOWN, target, radius, target);
             }
             return new NumericValue(ticket.timeout());
         });

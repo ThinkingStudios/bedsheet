@@ -32,7 +32,6 @@ import net.minecraft.nbt.EndTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -75,7 +74,7 @@ public class NBTSerializableValue extends Value implements ContainerValueInterfa
         {
             try
             {
-                return TagParser.parseAsArgument(NbtOps.INSTANCE, new StringReader(nbtString));
+                return (new TagParser(new StringReader(nbtString))).readValue();
             }
             catch (CommandSyntaxException e)
             {
@@ -128,7 +127,7 @@ public class NBTSerializableValue extends Value implements ContainerValueInterfa
     {
         try
         {
-            Tag tag = TagParser.parseAsArgument(NbtOps.INSTANCE, new StringReader(nbtString));
+            Tag tag = (new TagParser(new StringReader(nbtString))).readValue();
             NBTSerializableValue value = new NBTSerializableValue(tag);
             value.nbtString = null;
             return value;

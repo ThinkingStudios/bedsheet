@@ -20,18 +20,23 @@ import carpet.script.value.MapValue;
 import carpet.script.value.StringValue;
 import carpet.utils.CarpetProfiler;
 import carpet.utils.Messenger;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.SemanticVersion;
-import net.fabricmc.loader.api.Version;
-import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.api.metadata.version.VersionPredicate;
+//import net.fabricmc.api.EnvType;
+//import net.fabricmc.loader.api.FabricLoader;
+//import net.fabricmc.loader.api.ModContainer;
+//import net.fabricmc.loader.api.SemanticVersion;
+//import net.fabricmc.loader.api.Version;
+//import net.fabricmc.loader.api.VersionParsingException;
+//import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.fml.ModContainer;
+import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.apache.maven.artifact.versioning.VersionRange;
+import org.thinkingstudio.sheet.util.NeoHelper;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -144,9 +149,9 @@ public class Carpet
     @Nullable
     public static Module fetchGlobalModule(String name, boolean allowLibraries) throws IOException
     {
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+        if (NeoHelper.isDevelopmentEnvironment())
         {
-            Path globalFolder = FabricLoader.getInstance().getConfigDir().resolve("carpet/scripts");
+            Path globalFolder = NeoHelper.getConfigDir().resolve("carpet/scripts");
             if (!Files.exists(globalFolder))
             {
                 Files.createDirectories(globalFolder);
@@ -168,9 +173,9 @@ public class Carpet
 
     public static void addGlobalModules(final List<String> moduleNames, boolean includeBuiltIns) throws IOException
     {
-        if (includeBuiltIns && (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT))
+        if (includeBuiltIns && (NeoHelper.getEnvironmentType().isClient()))
         {
-            Path globalScripts = FabricLoader.getInstance().getConfigDir().resolve("carpet/scripts");
+            Path globalScripts = NeoHelper.getConfigDir().resolve("carpet/scripts");
             if (!Files.exists(globalScripts))
             {
                 Files.createDirectories(globalScripts);
@@ -186,21 +191,21 @@ public class Carpet
 
     public static void assertRequirementMet(CarpetScriptHost host, String requiredModId, String stringPredicate)
     {
-        VersionPredicate predicate;
+        VersionRange range;
         try
         {
-            predicate = VersionPredicate.parse(stringPredicate);
+            range = VersionRange.createFromVersionSpec(stringPredicate);
         }
-        catch (VersionParsingException e)
+        catch (Exception e)
         {
             throw new InternalExpressionException("Failed to parse version conditions for '" + requiredModId + "' in 'requires': " + e.getMessage());
         }
 
-        ModContainer mod = FabricLoader.getInstance().getModContainer(requiredModId).orElse(null);
+        ModContainer mod = NeoHelper.getModContainer(requiredModId).orElse(null);
         if (mod != null)
         {
-            Version presentVersion = mod.getMetadata().getVersion();
-            if (predicate.test(presentVersion) || (FabricLoader.getInstance().isDevelopmentEnvironment() && !(presentVersion instanceof SemanticVersion)))
+            ArtifactVersion presentVersion = mod.getModInfo().getVersion();
+            if (range.containsVersion(presentVersion) || (NeoHelper.isDevelopmentEnvironment() && !(presentVersion instanceof DefaultArtifactVersion)))
             { // in a dev env, mod version is usually replaced with ${version}, and that isn't semantic
                 return;
             }

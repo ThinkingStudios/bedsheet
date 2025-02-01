@@ -1,25 +1,23 @@
 package carpet.mixins;
 
-import carpet.fakes.TicketsFetcherInterface;
+import carpet.fakes.ChunkTicketManagerInterface;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.server.level.DistanceManager;
 import net.minecraft.server.level.Ticket;
-import net.minecraft.world.level.TicketStorage;
+import net.minecraft.util.SortedArraySet;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.List;
-
 @Mixin(DistanceManager.class)
-public abstract class DistanceManager_scarpetMixin implements TicketsFetcherInterface
+public abstract class DistanceManager_scarpetMixin implements ChunkTicketManagerInterface
 {
-    @Shadow @Final private TicketStorage ticketStorage;
+    @Shadow @Final private Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>> tickets;
 
     @Override
-    public Long2ObjectOpenHashMap<List<Ticket>>  getTicketsByPosition()
+    public Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>>  getTicketsByPosition()
     {
-        return ((TicketsFetcherInterface)ticketStorage).getTicketsByPosition();
+        return tickets;
     }
 
 }

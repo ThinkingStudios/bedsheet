@@ -19,6 +19,9 @@ public abstract class ExperienceOrb_xpNoCooldownMixin extends Entity
     @Shadow
     private int count;
 
+    @Shadow
+    private int value;
+
     public ExperienceOrb_xpNoCooldownMixin(EntityType<?> type, Level world)
     {
         super(type, world);
@@ -27,15 +30,13 @@ public abstract class ExperienceOrb_xpNoCooldownMixin extends Entity
     @Shadow
     protected abstract int repairPlayerItems(ServerPlayer player, int amount);
 
-    @Shadow public abstract int getValue();
-
     @Inject(method = "playerTouch", at = @At("HEAD"))
     private void addXP(Player player, CallbackInfo ci) {
         if (CarpetSettings.xpNoCooldown && !level().isClientSide) {
             player.takeXpDelay = 0;
             // reducing the count to 1 and leaving vanilla to deal with it
             while (this.count > 1) {
-                int remainder = this.repairPlayerItems((ServerPlayer) player, this.getValue());
+                int remainder = this.repairPlayerItems((ServerPlayer) player, this.value);
                 if (remainder > 0) {
                     player.giveExperiencePoints(remainder);
                 }

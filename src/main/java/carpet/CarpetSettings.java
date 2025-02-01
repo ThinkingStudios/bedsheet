@@ -9,8 +9,8 @@ import carpet.settings.Rule;
 import carpet.utils.Translations;
 import carpet.utils.CommandHelper;
 import carpet.utils.Messenger;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.SemanticVersion;
+//import net.fabricmc.loader.api.FabricLoader;
+//import net.fabricmc.loader.api.SemanticVersion;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +30,8 @@ import net.minecraft.world.level.border.WorldBorder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.thinkingstudio.sheet.util.NeoHelper;
+import org.thinkingstudio.sheet.SheetModReference;
 
 import java.util.Optional;
 
@@ -48,12 +50,14 @@ import static carpet.api.settings.RuleCategory.CLIENT;
 @SuppressWarnings({"CanBeFinal", "removal"}) // removal should be removed after migrating rules to the new system
 public class CarpetSettings
 {
-    public static final String carpetVersion = FabricLoader.getInstance().getModContainer("carpet").orElseThrow().getMetadata().getVersion().toString();
+    public static final String carpetVersion = NeoHelper.getModContainer(SheetModReference.MODID).orElseThrow().getModInfo().getVersion().toString();
     public static final int [] releaseTarget =  {
-            ((SemanticVersion)FabricLoader.getInstance().getModContainer("minecraft").orElseThrow().getMetadata().getVersion()).getVersionComponent(1),
-            ((SemanticVersion)FabricLoader.getInstance().getModContainer("minecraft").orElseThrow().getMetadata().getVersion()).getVersionComponent(2)
+            NeoHelper.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMajorVersion(),
+            NeoHelper.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getIncrementalVersion()
+//            ((SemanticVersion)FabricLoader.getInstance().getModContainer("minecraft").orElseThrow().getMetadata().getVersion()).getVersionComponent(1),
+//            ((SemanticVersion)FabricLoader.getInstance().getModContainer("minecraft").orElseThrow().getMetadata().getVersion()).getVersionComponent(2)
     };
-    public static final Logger LOG = LoggerFactory.getLogger("carpet");
+    public static final Logger LOG = LoggerFactory.getLogger(SheetModReference.MODNAME);
     public static final ThreadLocal<Boolean> skipGenerationChecks = ThreadLocal.withInitial(() -> false);
     public static final ThreadLocal<Boolean> impendingFillSkipUpdates = ThreadLocal.withInitial(() -> false);
     public static int runPermissionLevel = 2;

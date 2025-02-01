@@ -31,7 +31,7 @@ import carpet.utils.MobAI;
 import carpet.utils.SpawnReporter;
 import com.mojang.brigadier.CommandDispatcher;
 
-import net.fabricmc.loader.api.FabricLoader;
+//import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -39,7 +39,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.commands.PerfCommand;
 import net.minecraft.server.level.ServerPlayer;
+import org.thinkingstudio.sheet.util.NeoHelper;
 
+@SuppressWarnings("removal")
 public class CarpetServer // static for now - easier to handle all around the code, its one anyways
 {
     public static MinecraftServer minecraft_server;
@@ -49,8 +51,8 @@ public class CarpetServer // static for now - easier to handle all around the co
 
     /**
      * Registers a {@link CarpetExtension} to be managed by Carpet.<br>
-     * Should be called before Carpet's startup, like in Fabric Loader's
-     * {@link net.fabricmc.api.ModInitializer} entrypoint
+     * Should be called before Carpet's startup.
+     *
      * @param extension The instance of a {@link CarpetExtension} to be registered
      */
     public static void manageExtension(CarpetExtension extension)
@@ -66,9 +68,8 @@ public class CarpetServer // static for now - easier to handle all around the co
         }
     }
 
-    // Separate from onServerLoaded, because a server can be loaded multiple times in singleplayer
-    // Gets called by Fabric Loader from a ServerModInitializer and a ClientModInitializer, in both to allow extensions 
-    // to register before this call in a ModInitializer (declared in fabric.mod.json)
+    // Separate from onServerLoaded, as it is possible to load the server multiple times in a single player game.
+    // Called by NeoForge from the mod constructor to allow extensions to register in the mod constructor before this call.
     public static void onGameStarted()
     {
         settingsManager = new carpet.settings.SettingsManager(CarpetSettings.carpetVersion, "carpet", "Carpet Mod");
@@ -141,7 +142,7 @@ public class CarpetServer // static for now - easier to handle all around the co
         if (environment != Commands.CommandSelection.DEDICATED)
             PerfCommand.register(dispatcher);
         
-        if (FabricLoader.getInstance().isDevelopmentEnvironment())
+        if (NeoHelper.isDevelopmentEnvironment())
             TestCommand.register(dispatcher);
         // todo 1.16 - re-registerer apps if that's a reload operation.
     }

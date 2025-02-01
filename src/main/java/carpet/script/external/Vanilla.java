@@ -4,7 +4,7 @@ import carpet.CarpetSettings;
 import carpet.fakes.BiomeInterface;
 import carpet.fakes.BlockPredicateInterface;
 import carpet.fakes.BlockStateArgumentInterface;
-import carpet.fakes.TicketsFetcherInterface;
+import carpet.fakes.ChunkTicketManagerInterface;
 import carpet.fakes.CommandDispatcherInterface;
 import carpet.fakes.EntityInterface;
 import carpet.fakes.InventoryBearerInterface;
@@ -31,8 +31,8 @@ import carpet.utils.CommandHelper;
 import carpet.utils.SpawnReporter;
 import com.mojang.brigadier.CommandDispatcher;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
+//import net.fabricmc.loader.api.FabricLoader;
+//import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.blocks.BlockInput;
 import net.minecraft.core.BlockPos;
@@ -73,6 +73,8 @@ import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import net.neoforged.neoforgespi.language.IModInfo;
+import org.thinkingstudio.sheet.util.NeoHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -122,9 +124,9 @@ public class Vanilla
         return ((ServerWorldInterface) world).getWorldPropertiesCM();
     }
 
-    public static Long2ObjectOpenHashMap<List<Ticket>> ChunkTicketManager_getTicketsByPosition(DistanceManager ticketManager)
+    public static Long2ObjectOpenHashMap<SortedArraySet<Ticket<?>>> ChunkTicketManager_getTicketsByPosition(DistanceManager ticketManager)
     {
-        return ((TicketsFetcherInterface) ticketManager).getTicketsByPosition();
+        return ((ChunkTicketManagerInterface) ticketManager).getTicketsByPosition();
     }
 
     public static DensityFunction.Visitor RandomState_getVisitor(RandomState randomState)
@@ -169,15 +171,15 @@ public class Vanilla
 
     public static boolean isDevelopmentEnvironment()
     {
-        return FabricLoader.getInstance().isDevelopmentEnvironment();
+        return NeoHelper.isDevelopmentEnvironment();
     }
 
     public static MapValue getServerMods(MinecraftServer server)
     {
         Map<Value, Value> ret = new HashMap<>();
-        for (ModContainer mod : FabricLoader.getInstance().getAllMods())
+        for (IModInfo mod : NeoHelper.getAllMods())
         {
-            ret.put(new StringValue(mod.getMetadata().getId()), new StringValue(mod.getMetadata().getVersion().getFriendlyString()));
+            ret.put(new StringValue(mod.getModId()), new StringValue(mod.getVersion().toString()));
         }
         return MapValue.wrap(ret);
     }

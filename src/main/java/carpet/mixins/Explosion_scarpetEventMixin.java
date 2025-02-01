@@ -41,14 +41,14 @@ public abstract class Explosion_scarpetEventMixin
         affectedEntities.clear();
     }
 
-    @Redirect(method = "hurtEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;onExplosionHit(Lnet/minecraft/world/entity/Entity;)V"))
+    @Redirect(method = "hurtEntities(Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;onExplosionHit(Lnet/minecraft/world/entity/Entity;)V"))
     private void onEntityHit(Entity instance, Entity entity)
     {
         affectedEntities.add(instance);
         instance.onExplosionHit(entity);
     }
 
-    @Inject(method = "explode", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/ServerExplosion;hurtEntities()V", shift = At.Shift.AFTER))
+    @Inject(method = "explode", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/ServerExplosion;hurtEntities(Ljava/util/List;)V", shift = At.Shift.AFTER))
     private void onExplosionDone(CallbackInfo ci, List list)
     {
         if (EXPLOSION_OUTCOME.isNeeded() && !level.isClientSide())

@@ -2,9 +2,7 @@ package carpet.mixins;
 
 import carpet.CarpetSettings;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,25 +25,20 @@ public class LevelChunk_fillUpdatesMixin
 
     @Redirect(method = "setBlockState", at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/level/block/entity/BlockEntity;preRemoveSideEffects(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"
+            target = "Lnet/minecraft/world/level/block/state/BlockState;onRemove(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)V"
     ))
-    private void onPreRemoveSideEffects(BlockEntity blockEntity, BlockPos blockPos_1, BlockState blockState_1)
+    private void onRemovedBlock(BlockState blockState, Level world, BlockPos pos, BlockState state, boolean moved)
     {
-        if (!CarpetSettings.impendingFillSkipUpdates.get())
+        if (CarpetSettings.impendingFillSkipUpdates.get()) // doing due dilligence from AbstractBlock onStateReplaced
         {
-            blockEntity.preRemoveSideEffects(blockPos_1, blockState_1);
+            if (blockState.hasBlockEntity() && !blockState.is(state.getBlock()))
+            {
+                world.removeBlockEntity(pos);
+            }
         }
-    }
-
-    @Redirect(method = "setBlockState", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/level/block/state/BlockState;affectNeighborsAfterRemoval(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Z)V"
-    ))
-    private void onAffectNeighborsAfterRemoval(final BlockState instance, final ServerLevel serverLevel, final BlockPos blockPos, final boolean b)
-    {
-        if (!CarpetSettings.impendingFillSkipUpdates.get())
+        else
         {
-            instance.affectNeighborsAfterRemoval(serverLevel, blockPos, b);
+            blockState.onRemove(world, pos, state, moved);
         }
     }
 }

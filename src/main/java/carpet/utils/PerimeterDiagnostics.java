@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.random.Weighted;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -163,10 +162,9 @@ public class PerimeterDiagnostics
         if (sle == null || !worldServer.getChunkSource().getGenerator().getMobsAt(worldServer.getBiome(pos), worldServer.structureManager(), ctype, pos).unwrap().contains(sle))
         {
             sle = null;
-            for (Weighted<MobSpawnSettings.SpawnerData> wsle: worldServer.getChunkSource().getGenerator().getMobsAt(worldServer.getBiome(pos), worldServer.structureManager(), ctype, pos).unwrap())
+            for (MobSpawnSettings.SpawnerData sle: worldServer.getChunkSource().getGenerator().getMobsAt(worldServer.getBiome(pos), worldServer.structureManager(), ctype, pos).unwrap())
             {
-                MobSpawnSettings.SpawnerData sle = wsle.value();
-                if (el.getType() == sle.type())
+                if (el.getType() == sle.type)
                 {
                     this.sle = sle;
                     break;
@@ -178,9 +176,9 @@ public class PerimeterDiagnostics
             }
         }
 
-        if (SpawnPlacements.isSpawnPositionOk(sle.type(), worldServer, pos))
+        if (SpawnPlacements.isSpawnPositionOk(sle.type, worldServer, pos))
         {
-            el.snapTo(pos.getX() + 0.5F, pos.getY(), pos.getZ()+0.5F, 0.0F, 0.0F);
+            el.moveTo(pos.getX() + 0.5F, pos.getY(), pos.getZ()+0.5F, 0.0F, 0.0F);
             return el.checkSpawnObstruction(worldServer) && el.checkSpawnRules(worldServer, EntitySpawnReason.NATURAL) &&
                     SpawnPlacements.checkSpawnRules(el.getType(),(ServerLevel)el.getCommandSenderWorld(), EntitySpawnReason.NATURAL, el.blockPosition(), el.getCommandSenderWorld().random) &&
                     worldServer.noCollision(el); // check collision rules once they stop fiddling with them after 1.14.1
