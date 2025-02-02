@@ -13,6 +13,8 @@ group = project.maven_group
 loom {
 	accessWidenerPath = file("src/main/resources/carpet.accesswidener")
 	runtimeOnlyLog4j = true
+
+	silentMojangMappingsLicense()
 }
 
 repositories {
