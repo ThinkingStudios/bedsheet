@@ -4,7 +4,7 @@ import carpet.CarpetSettings;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-//import net.minecraft.world.item.ElytraItem;
+import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +26,7 @@ public abstract class Player_antiCheatDisabledMixin
         if (CarpetSettings.antiCheatDisabled && (Object)this instanceof ServerPlayer sp && sp.getServer().isDedicatedServer())
         {
             ItemStack itemStack_1 = getItemBySlot(EquipmentSlot.CHEST);
-            if (itemStack_1.getItem() == Items.ELYTRA && !itemStack_1.nextDamageWillBreak()) {
+            if (itemStack_1.getItem() == Items.ELYTRA && ElytraItem.isFlyEnabled(itemStack_1)) {
                 startFallFlying();
                 cir.setReturnValue(true);
             }

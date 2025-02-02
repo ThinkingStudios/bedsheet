@@ -1,6 +1,5 @@
 package carpet.mixins;
 
-import net.minecraft.world.level.redstone.Orientation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -24,7 +23,7 @@ public class DispenserBlock_qcMixin {
             target =  "Lnet/minecraft/world/level/Level;hasNeighborSignal(Lnet/minecraft/core/BlockPos;)Z"
         )
     )
-    private boolean carpet_hasQuasiSignal(Level _level, BlockPos above, BlockState state, Level level, BlockPos pos, Block neighborBlock, Orientation neighborPos, boolean movedByPiston) {
+    private boolean carpet_hasQuasiSignal(Level _level, BlockPos above, BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         return QuasiConnectivity.hasQuasiSignal(level, pos);
     }
 }

@@ -18,14 +18,14 @@ logoFile = "assets/carpet/icon.png"
 [[dependencies.sheet]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.3,)"
+versionRange = "[21,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.sheet]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.3,)"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
 

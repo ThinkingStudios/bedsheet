@@ -4,7 +4,6 @@ import carpet.CarpetSettings;
 import carpet.fakes.LevelInterface;
 import net.minecraft.world.level.redstone.NeighborUpdater;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.redstone.Orientation;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.core.BlockPos;
@@ -30,10 +29,10 @@ public class BarrierBlock_updateSuppressionBlockMixin extends Block {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation fromPos, boolean notify) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         if (CarpetSettings.updateSuppressionBlock != -1) {
-            if (true/*fromPos.equals(pos.above())*/) { // todo neighbour updates don't have source
-                BlockState stateAbove = level.getBlockState(pos.above());
+            if (fromPos.equals(pos.above())) {
+                BlockState stateAbove = level.getBlockState(fromPos);
                 if (stateAbove.is(Blocks.ACTIVATOR_RAIL) && !stateAbove.getValue(PoweredRailBlock.POWERED)) {
                     level.scheduleTick(pos, this, 1);
                     NeighborUpdater updater = ((LevelInterface)level).getNeighborUpdater();

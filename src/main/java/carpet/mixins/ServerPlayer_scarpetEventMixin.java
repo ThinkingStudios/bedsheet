@@ -14,7 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -83,23 +83,33 @@ public abstract class ServerPlayer_scarpetEventMixin extends Player implements S
         }
     }
 
+    @Redirect(method = "setPlayerInput", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/server/level/ServerPlayer;setShiftKeyDown(Z)V"
+    ))
+    private void setSneakingConditionally(ServerPlayer serverPlayerEntity, boolean sneaking)
+    {
+        if (!((EntityInterface)serverPlayerEntity.getVehicle()).isPermanentVehicle()) // won't since that method makes sure its not null
+            serverPlayerEntity.setShiftKeyDown(sneaking);
+    }
+
     private Vec3 previousLocation;
     private ResourceKey<Level> previousDimension;
 
-    @Inject(method = "teleport", at = @At("HEAD"))
-    private void logPreviousCoordinates(TeleportTransition serverWorld, CallbackInfoReturnable<Entity> cir)
+    @Inject(method = "changeDimension", at = @At("HEAD"))
+    private void logPreviousCoordinates(DimensionTransition serverWorld, CallbackInfoReturnable<Entity> cir)
     {
         previousLocation = position();
         previousDimension = level().dimension();  //dimension type
     }
 
-    @Inject(method = "teleport", at = @At("RETURN"))
-    private void atChangeDimension(TeleportTransition destinationP, CallbackInfoReturnable<Entity> cir)
+    @Inject(method = "changeDimension", at = @At("RETURN"))
+    private void atChangeDimension(DimensionTransition destinationP, CallbackInfoReturnable<Entity> cir)
     {
         if (PLAYER_CHANGES_DIMENSION.isNeeded())
         {
             ServerPlayer player = (ServerPlayer) (Object)this;
-            TeleportTransition destinationTransition = destinationP;
+            DimensionTransition destinationTransition = destinationP;
             ServerLevel destination = destinationTransition.newLevel();
             Vec3 to = null;
             if (!wonGame || previousDimension != Level.END || destination.dimension() != Level.OVERWORLD)

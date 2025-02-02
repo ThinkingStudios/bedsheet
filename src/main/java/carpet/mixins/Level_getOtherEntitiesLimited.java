@@ -2,7 +2,6 @@ package carpet.mixins;
 
 import carpet.fakes.LevelInterface;
 import com.google.common.collect.Lists;
-import net.minecraft.util.profiling.Profiler;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -10,6 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
@@ -24,7 +24,7 @@ public abstract class Level_getOtherEntitiesLimited implements LevelInterface {
 
     @Override
     public List<Entity> getOtherEntitiesLimited(@Nullable Entity except, AABB box, Predicate<? super Entity> predicate, int limit) {
-        Profiler.get().incrementCounter("getEntities"); // visit
+        this.getProfiler().incrementCounter("getEntities"); // visit
         AtomicInteger checkedEntities = new AtomicInteger();
         List<Entity> list = Lists.newArrayList();
         try {
@@ -54,6 +54,9 @@ public abstract class Level_getOtherEntitiesLimited implements LevelInterface {
         }
         return list;
     }
+
+    @Shadow
+    public abstract ProfilerFiller getProfiler();
 
     @Shadow
     protected abstract LevelEntityGetter<Entity> getEntities();

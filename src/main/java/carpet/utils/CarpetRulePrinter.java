@@ -5,6 +5,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import joptsimple.util.PathConverter;
+import joptsimple.util.PathProperties;
 //import net.fabricmc.api.DedicatedServerModInitializer;
 //import net.fabricmc.loader.api.FabricLoader;
 

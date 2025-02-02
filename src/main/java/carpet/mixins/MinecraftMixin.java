@@ -16,7 +16,7 @@ public class MinecraftMixin
     @Shadow public ClientLevel level;
     
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V", at = @At("HEAD"))
-    private void onCloseGame(Screen screen, boolean b, CallbackInfo ci)
+    private void onCloseGame(Screen nextScreen, boolean keepResourcePacks, CallbackInfo ci)
     {
         CarpetClient.disconnect();
     }

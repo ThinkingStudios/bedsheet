@@ -3,7 +3,6 @@ package carpet.mixins;
 import carpet.CarpetSettings;
 import carpet.fakes.LevelInterface;
 import carpet.utils.SpawnReporter;
-import net.minecraft.world.entity.EntitySpawnReason;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,9 +12,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -25,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -133,9 +133,9 @@ public class NaturalSpawnerMixin
 
     @Redirect(method = "getMobForSpawn", at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/EntityType;create(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/EntitySpawnReason;)Lnet/minecraft/world/entity/Entity;"
+            target = "Lnet/minecraft/world/entity/EntityType;create(Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/entity/Entity;"
     ))
-    private static Entity create(final EntityType entityType, final Level world_1, final EntitySpawnReason entitySpawnReason)
+    private static Entity create(EntityType<?> entityType, Level world_1)
     {
         if (CarpetSettings.lagFreeSpawning)
         {
@@ -143,11 +143,11 @@ public class NaturalSpawnerMixin
             if (precookedMobs.containsKey(entityType))
                 //this mob has been <init>'s but not used yet
                 return precookedMobs.get(entityType);
-            Entity e = entityType.create(world_1, entitySpawnReason);
+            Entity e = entityType.create(world_1);
             precookedMobs.put(entityType, e);
             return e;
         }
-        return entityType.create(world_1, entitySpawnReason);
+        return entityType.create(world_1);
     }
 
     @Redirect(method = "spawnCategoryForPosition(Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/NaturalSpawner$SpawnPredicate;Lnet/minecraft/world/level/NaturalSpawner$AfterSpawnCallback;)V", at = @At(
@@ -177,9 +177,9 @@ public class NaturalSpawnerMixin
     // TODO: Redirect failure, need fix.
 //    @Redirect(method = "spawnCategoryForPosition(Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/NaturalSpawner$SpawnPredicate;Lnet/minecraft/world/level/NaturalSpawner$AfterSpawnCallback;)V", at = @At(
 //            value = "INVOKE",
-//            target = "Lnet/minecraft/world/entity/Mob;finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/world/entity/SpawnGroupData;)Lnet/minecraft/world/entity/SpawnGroupData;"
+//            target = "Lnet/minecraft/world/entity/Mob;finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/world/entity/SpawnGroupData;)Lnet/minecraft/world/entity/SpawnGroupData;"
 //    ))
-//    private static SpawnGroupData spawnEntity(Mob mobEntity, ServerLevelAccessor serverWorldAccess, DifficultyInstance difficulty, EntitySpawnReason spawnReason, SpawnGroupData entityData)
+//    private static SpawnGroupData spawnEntity(Mob mobEntity, ServerLevelAccessor serverWorldAccess, DifficultyInstance difficulty, MobSpawnType spawnReason, SpawnGroupData entityData)
 //    {
 //        if (!SpawnReporter.mockSpawns) // WorldAccess
 //            return mobEntity.finalizeSpawn(serverWorldAccess, difficulty, spawnReason, entityData);
@@ -272,13 +272,17 @@ public class NaturalSpawnerMixin
     @Inject(method = "spawnForChunk", at = @At("HEAD"))
     // allows to change mobcaps and captures each category try per dimension before it fails due to full mobcaps.
     private static void checkSpawns(ServerLevel world, LevelChunk chunk, NaturalSpawner.SpawnState info,
-                                    List<MobCategory> list, CallbackInfo ci)
+                                    boolean spawnAnimals, boolean spawnMonsters, boolean shouldSpawnAnimals, CallbackInfo ci)
     {
         if (SpawnReporter.trackingSpawns())
         {
-            for (MobCategory entityCategory: list)
-            {
+            MobCategory[] var6 = SPAWNING_CATEGORIES;
+            int var7 = var6.length;
 
+            for(int var8 = 0; var8 < var7; ++var8) {
+                MobCategory entityCategory = var6[var8];
+                if ((spawnAnimals || !entityCategory.isFriendly()) && (spawnMonsters || entityCategory.isFriendly()) && (shouldSpawnAnimals || !entityCategory.isPersistent()) )
+                {
                     ResourceKey<Level> dim = world.dimension(); // getDimensionType;
                     int newCap = entityCategory.getMaxInstancesPerChunk();  //(int) ((double)entityCategory.getCapacity()*(Math.pow(2.0,(SpawnReporter.mobcap_exponent/4))));
                     int int_2 = SpawnReporter.chunkCounts.get(dim); // eligible chunks for spawning
@@ -308,6 +312,7 @@ public class NaturalSpawnerMixin
                         //else
                         //full mobcaps - and key in local_spawns will be missing
                     }
+                }
             }
         }
     }

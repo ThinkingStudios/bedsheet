@@ -23,7 +23,7 @@ public final class CommandHelper {
         {
             return;
         }
-        server.schedule(new TickTask(server.getTickCount(), () ->
+        server.tell(new TickTask(server.getTickCount(), () ->
         {
             try {
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
