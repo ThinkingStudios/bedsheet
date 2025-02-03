@@ -73,7 +73,7 @@ public abstract class Explosion_scarpetEventMixin
     {
         if (EXPLOSION_OUTCOME.isNeeded() && !level.isClientSide())
         {
-            EXPLOSION_OUTCOME.onExplosion((ServerLevel) level, source, this::getIndirectSourceEntity, x, y, z, radius, fire, toBlow, affectedEntities, blockInteraction);
+            EXPLOSION_OUTCOME.onExplosion((ServerLevel) level, source, this::getIndirectSourceEntity, this.x, this.y, this.z, radius, fire, toBlow, affectedEntities, blockInteraction);
         }
     }
 }

@@ -180,7 +180,6 @@
     "ChestBlock_customStickyMixin",
     "PistonStructureResolver_customStickyMixin",
 
-    "CustomPacketPayload_networkStuffMixin",
     "ServerGamePacketListenerimpl_connectionMixin"
 
   ],

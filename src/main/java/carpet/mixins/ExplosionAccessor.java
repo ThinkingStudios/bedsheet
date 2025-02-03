@@ -24,13 +24,13 @@ public interface ExplosionAccessor {
     @Accessor
     RandomSource getRandom();
 
-    @Accessor
+    @Accessor(remap = false)
     double getX();
 
-    @Accessor
+    @Accessor(remap = false)
     double getY();
 
-    @Accessor
+    @Accessor(remap = false)
     double getZ();
 
     @Accessor
