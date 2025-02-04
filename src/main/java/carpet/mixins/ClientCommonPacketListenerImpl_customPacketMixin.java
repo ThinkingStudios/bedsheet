@@ -19,8 +19,7 @@ public class ClientCommonPacketListenerImpl_customPacketMixin
         CarpetClient.disconnect();
     }
 
-    @Inject(method = "handleCustomPayload(Lnet/minecraft/network/protocol/common/ClientboundCustomPayloadPacket;)V",
-    at = @At("HEAD"))
+    @Inject(method = "handleCustomPayload(Lnet/minecraft/network/protocol/common/ClientboundCustomPayloadPacket;)V", at = @At("HEAD"))
     private void onOnCustomPayload(ClientboundCustomPayloadPacket packet, CallbackInfo ci)
     {
         //System.out.println("CustomPayload of : " + packet.payload());

@@ -13,7 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ReloadCommand_reloadAppsMixin {
     // method_13530(Lcom/mojang/brigadier/context/CommandContext;)I = lambda$register$3(Lcom/mojang/brigadier/context/CommandContext;)I
     // internal of register.
-    @Inject(method = { "method_13530(Lcom/mojang/brigadier/context/CommandContext;)I", "lambda$register$3(Lcom/mojang/brigadier/context/CommandContext;)I" }, at = @At("TAIL"), remap = false)
+    // dev & compile use intermediary name, runtime use mojmap name
+    @Inject(method = {
+            "method_13530(Lcom/mojang/brigadier/context/CommandContext;)I", // dev & compile
+            "lambda$register$3(Lcom/mojang/brigadier/context/CommandContext;)I" // runtime
+    }, at = @At("TAIL"), remap = false)
     private static void onReload(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir)
     {
         // can't fetch here the reference to the server

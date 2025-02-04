@@ -1,6 +1,7 @@
 package carpet.mixins;
 
 import carpet.fakes.ServerPlayerInteractionManagerInterface;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,12 +40,12 @@ public class ServerPlayerGameMode_scarpetEventsMixin implements ServerPlayerInte
 
     @Shadow public ServerLevel level;
 
-    @Inject(method = "destroyBlock", locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true, at = @At(
+    @Inject(method = "destroyBlock", cancellable = true, at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/server/level/ServerPlayerGameMode;removeBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Z",
             shift = At.Shift.BEFORE
     ))
-    private void onBlockBroken(final BlockPos blockPos, final CallbackInfoReturnable<Boolean> cir, final BlockState blockstate1, final BlockEvent.BreakEvent event, final BlockEntity blockentity, final Block block, final BlockState blockState)
+    private void onBlockBroken(final BlockPos blockPos, final CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 1) final BlockState blockState)
     {
         if(PLAYER_BREAK_BLOCK.onBlockBroken(player, blockPos, blockState)) {
             this.level.sendBlockUpdated(blockPos, blockState, blockState, 3);

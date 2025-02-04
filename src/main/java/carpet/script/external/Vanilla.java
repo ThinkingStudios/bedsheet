@@ -20,7 +20,6 @@ import carpet.fakes.ServerPlayerInterface;
 import carpet.fakes.ServerPlayerInteractionManagerInterface;
 import carpet.fakes.ServerWorldInterface;
 import carpet.fakes.SpawnHelperInnerInterface;
-import carpet.fakes.ThreadedAnvilChunkStorageInterface;
 import carpet.mixins.Objective_scarpetMixin;
 import carpet.mixins.PoiRecord_scarpetMixin;
 import carpet.mixins.Scoreboard_scarpetMixin;
@@ -84,7 +83,7 @@ import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.neoforged.neoforgespi.language.IModInfo;
-import org.thinkingstudio.sheet.util.NeoHelper;
+import org.thinkingstudio.sheet.util.NeoHooks;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -192,13 +191,13 @@ public class Vanilla
 
     public static boolean isDevelopmentEnvironment()
     {
-        return NeoHelper.isDevelopmentEnvironment();
+        return NeoHooks.isDevelopmentEnvironment();
     }
 
     public static MapValue getServerMods(MinecraftServer server)
     {
         Map<Value, Value> ret = new HashMap<>();
-        for (IModInfo mod : NeoHelper.getAllMods())
+        for (IModInfo mod : NeoHooks.getAllMods())
         {
             ret.put(new StringValue(mod.getModId()), new StringValue(mod.getVersion().toString()));
         }
