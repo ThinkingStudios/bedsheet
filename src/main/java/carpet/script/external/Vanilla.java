@@ -74,7 +74,7 @@ import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.neoforged.neoforgespi.language.IModInfo;
-import org.thinkingstudio.sheet.util.NeoHelper;
+import org.thinkingstudio.sheet.util.NeoHooks;
 
 import java.util.HashMap;
 import java.util.List;
@@ -171,13 +171,13 @@ public class Vanilla
 
     public static boolean isDevelopmentEnvironment()
     {
-        return NeoHelper.isDevelopmentEnvironment();
+        return NeoHooks.isDevelopmentEnvironment();
     }
 
     public static MapValue getServerMods(MinecraftServer server)
     {
         Map<Value, Value> ret = new HashMap<>();
-        for (IModInfo mod : NeoHelper.getAllMods())
+        for (IModInfo mod : NeoHooks.getAllMods())
         {
             ret.put(new StringValue(mod.getModId()), new StringValue(mod.getVersion().toString()));
         }

@@ -1,5 +1,9 @@
 package carpet.mixins;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ServerExplosion;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -48,8 +52,8 @@ public abstract class Explosion_scarpetEventMixin
         instance.onExplosionHit(entity);
     }
 
-    @Inject(method = "explode", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/ServerExplosion;hurtEntities(Ljava/util/List;)V", shift = At.Shift.AFTER))
-    private void onExplosionDone(CallbackInfo ci, List list)
+    @Inject(method = "explode", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/ServerExplosion;hurtEntities(Ljava/util/List;)V", shift = At.Shift.AFTER))
+    private void onExplosionDone(CallbackInfo ci, @Local List<BlockPos> list)
     {
         if (EXPLOSION_OUTCOME.isNeeded() && !level.isClientSide())
         {

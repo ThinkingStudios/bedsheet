@@ -1,6 +1,7 @@
 package carpet.mixins;
 
 import carpet.fakes.ServerWorldInterface;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -51,7 +52,7 @@ public abstract class ServerLevel_scarpetMixin extends Level implements ServerWo
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
-    @Inject(method = "tickChunk", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(
+    @Inject(method = "tickChunk", at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z",
             shift = At.Shift.BEFORE,
@@ -59,7 +60,7 @@ public abstract class ServerLevel_scarpetMixin extends Level implements ServerWo
     ))
     private void onNaturalLightinig(LevelChunk chunk, int randomTickSpeed, CallbackInfo ci,
                                     //ChunkPos chunkPos, boolean bl, int i, int j, Profiler profiler, BlockPos blockPos, boolean bl2)
-                                    ChunkPos chunkPos, boolean bl, int i, int j, ProfilerFiller profiler, BlockPos blockPos, DifficultyInstance localDifficulty, boolean bl2, LightningBolt lightningEntity)
+                                    @Local BlockPos blockPos, @Local(ordinal = 1) boolean bl2)
     {
         if (LIGHTNING.isNeeded()) LIGHTNING.onWorldEventFlag((ServerLevel) (Object)this, blockPos, bl2?1:0);
     }

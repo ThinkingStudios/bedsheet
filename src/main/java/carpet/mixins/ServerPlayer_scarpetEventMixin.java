@@ -73,15 +73,16 @@ public abstract class ServerPlayer_scarpetEventMixin extends Player implements S
         STATISTICS.onPlayerStatistic((ServerPlayer) (Object)this, stat, amount);
     }
 
-    @Inject(method = "die", at = @At("HEAD"))
-    private void onDeathEvent(DamageSource source, CallbackInfo ci)
-    {
-        ((EntityInterface)this).getEventContainer().onEvent(EntityEventsGroup.Event.ON_DEATH, source.getMsgId());
-        if (PLAYER_DIES.isNeeded())
-        {
-            PLAYER_DIES.onPlayerEvent((ServerPlayer) (Object)this);
-        }
-    }
+    // use LivingDeathEvent replace on NeoForge
+//    @Inject(method = "die", at = @At("HEAD"))
+//    private void onDeathEvent(DamageSource source, CallbackInfo ci)
+//    {
+//        ((EntityInterface)this).getEventContainer().onEvent(EntityEventsGroup.Event.ON_DEATH, source.getMsgId());
+//        if (PLAYER_DIES.isNeeded())
+//        {
+//            PLAYER_DIES.onPlayerEvent((ServerPlayer) (Object)this);
+//        }
+//    }
 
     private Vec3 previousLocation;
     private ResourceKey<Level> previousDimension;

@@ -53,7 +53,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.storage.LevelResource;
-import org.thinkingstudio.sheet.util.NeoHelper;
+import org.thinkingstudio.sheet.util.NeoHooks;
 
 import static carpet.utils.Translations.tr;
 import static java.util.Comparator.comparing;
@@ -462,9 +462,9 @@ public class SettingsManager {
         }
         catch (NoSuchFileException e)
         {
-            if (path.equals(getFile()) && NeoHelper.getEnvironmentType().isClient())
+            if (path.equals(getFile()) && NeoHooks.getEnvironmentType().isClient())
             {
-                Path defaultsPath = NeoHelper.getConfigDir().resolve("carpet/default_"+identifier+".conf");
+                Path defaultsPath = NeoHooks.getConfigDir().resolve("carpet/default_"+identifier+".conf");
                 try {
                     if (Files.notExists(defaultsPath))
                     {

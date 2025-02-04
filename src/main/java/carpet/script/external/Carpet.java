@@ -36,7 +36,7 @@ import net.neoforged.fml.ModContainer;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.thinkingstudio.sheet.util.NeoHelper;
+import org.thinkingstudio.sheet.util.NeoHooks;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -149,9 +149,9 @@ public class Carpet
     @Nullable
     public static Module fetchGlobalModule(String name, boolean allowLibraries) throws IOException
     {
-        if (NeoHelper.isDevelopmentEnvironment())
+        if (NeoHooks.isDevelopmentEnvironment())
         {
-            Path globalFolder = NeoHelper.getConfigDir().resolve("carpet/scripts");
+            Path globalFolder = NeoHooks.getConfigDir().resolve("carpet/scripts");
             if (!Files.exists(globalFolder))
             {
                 Files.createDirectories(globalFolder);
@@ -173,9 +173,9 @@ public class Carpet
 
     public static void addGlobalModules(final List<String> moduleNames, boolean includeBuiltIns) throws IOException
     {
-        if (includeBuiltIns && (NeoHelper.getEnvironmentType().isClient()))
+        if (includeBuiltIns && (NeoHooks.getEnvironmentType().isClient()))
         {
-            Path globalScripts = NeoHelper.getConfigDir().resolve("carpet/scripts");
+            Path globalScripts = NeoHooks.getConfigDir().resolve("carpet/scripts");
             if (!Files.exists(globalScripts))
             {
                 Files.createDirectories(globalScripts);
@@ -201,11 +201,11 @@ public class Carpet
             throw new InternalExpressionException("Failed to parse version conditions for '" + requiredModId + "' in 'requires': " + e.getMessage());
         }
 
-        ModContainer mod = NeoHelper.getModContainer(requiredModId).orElse(null);
+        ModContainer mod = NeoHooks.getModContainer(requiredModId).orElse(null);
         if (mod != null)
         {
             ArtifactVersion presentVersion = mod.getModInfo().getVersion();
-            if (range.containsVersion(presentVersion) || (NeoHelper.isDevelopmentEnvironment() && !(presentVersion instanceof DefaultArtifactVersion)))
+            if (range.containsVersion(presentVersion) || (NeoHooks.isDevelopmentEnvironment() && !(presentVersion instanceof DefaultArtifactVersion)))
             { // in a dev env, mod version is usually replaced with ${version}, and that isn't semantic
                 return;
             }

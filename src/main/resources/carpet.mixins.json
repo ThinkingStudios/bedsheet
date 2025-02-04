@@ -182,9 +182,7 @@
 
     "DefaultRedstoneWireEvaluator_redstoneMixin",
 
-    "CustomPacketPayload_networkStuffMixin",
     "ServerGamePacketListenerimpl_connectionMixin"
-
   ],
   "client": [
     "Minecraft_tickMixin",
@@ -200,7 +198,6 @@
     "ClientPacketListener_customPacketsMixin",
     "DebugRenderer_scarpetRenderMixin",
     "LevelRenderer_scarpetRenderMixin",
-
 
     "ClientCommonPacketListenerImpl_customPacketMixin"
   ],

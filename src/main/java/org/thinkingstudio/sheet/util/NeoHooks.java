@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
-public class NeoHelper {
+public class NeoHooks {
     private static String[] launchArgs;
 
     public static boolean isDevelopmentEnvironment() {

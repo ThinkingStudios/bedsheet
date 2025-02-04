@@ -39,7 +39,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.commands.PerfCommand;
 import net.minecraft.server.level.ServerPlayer;
-import org.thinkingstudio.sheet.util.NeoHelper;
+import org.thinkingstudio.sheet.util.NeoHooks;
 
 @SuppressWarnings("removal")
 public class CarpetServer // static for now - easier to handle all around the code, its one anyways
@@ -142,7 +142,7 @@ public class CarpetServer // static for now - easier to handle all around the co
         if (environment != Commands.CommandSelection.DEDICATED)
             PerfCommand.register(dispatcher);
         
-        if (NeoHelper.isDevelopmentEnvironment())
+        if (NeoHooks.isDevelopmentEnvironment())
             TestCommand.register(dispatcher);
         // todo 1.16 - re-registerer apps if that's a reload operation.
     }

@@ -7,7 +7,7 @@ sourceCompatibility = JavaVersion.VERSION_21
 targetCompatibility = JavaVersion.VERSION_21
 
 archivesBaseName = "$project.archives_base_name-${loom.getPlatform().get().id()}"
-version = "$project.minecraft_version-$project.mod_version+v${new Date().format('yyMMdd')}"
+version = "$project.mod_main_version.${new Date().format('yyMMdd')}+mc$project.minecraft_version"
 group = project.maven_group
 
 loom {
@@ -37,14 +37,15 @@ dependencies {
 		parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_mappings}@zip")
 	}
 	neoForge "net.neoforged:neoforge:${project.neoforge_version}"
+
 	compileOnly "com.google.code.findbugs:jsr305:${project.jsr305_version}"
 }
 
 processResources {
-	inputs.property "version", project.version+'+v'+new Date().format('yyMMdd')
+	inputs.property "version", project.version
 
 	filesMatching("META-INF/neoforge.mods.toml") {
-		expand "version": project.mod_version+'+v'+new Date().format('yyMMdd')
+		expand "version": project.version
 	}
 }
 

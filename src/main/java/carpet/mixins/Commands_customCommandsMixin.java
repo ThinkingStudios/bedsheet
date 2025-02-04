@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class Commands_customCommandsMixin
 {
 
+    // Use RegisterCommandsEvent with NeoForge
 //    @Shadow
 //    @Final
 //    private CommandDispatcher<CommandSourceStack> dispatcher;
