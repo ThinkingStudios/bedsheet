@@ -1,6 +1,7 @@
 plugins {
-	id 'dev.architectury.loom' version '1.9-SNAPSHOT'
-	id 'maven-publish'
+	id "dev.architectury.loom" version "1.9-SNAPSHOT"
+	id "maven-publish"
+	id "com.hypherionmc.modutils.modpublisher" version "2.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_21
@@ -76,6 +77,23 @@ jar {
 
 remapJar {
 	atAccessWideners.add("carpet.accesswidener")
+}
+
+publisher {
+	apiKeys.modrinth(System.getenv("MODRINTH_TOKEN"))
+	apiKeys.curseforge(System.getenv("CURSEFORGE_TOKEN"))
+
+	curseID = "$project.curseforge_id"
+	modrinthID = "$project.modrinth_id"
+	versionType = "$project.release_type"
+	changelog = file("CHANGELOG.md").getText("UTF-8")
+	displayName = "$project.version"
+	gameVersions = ["1.21.1"]
+	loaders = loom.platform.get().id()
+	curseEnvironment = "$project.env_type"
+	setVersion("$project.version")
+	setArtifact(remapJar)
+	addAdditionalFile(sourcesJar)
 }
 
 // configure the maven publication
