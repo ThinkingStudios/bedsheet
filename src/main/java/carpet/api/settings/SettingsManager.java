@@ -53,7 +53,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.storage.LevelResource;
-import org.thinkingstudio.sheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 import static carpet.utils.Translations.tr;
 import static java.util.Comparator.comparing;

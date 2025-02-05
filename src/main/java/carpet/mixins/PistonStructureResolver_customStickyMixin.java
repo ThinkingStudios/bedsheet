@@ -17,7 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
-import org.thinkingstudio.sheet.util.PistonStructureResolverHooks;
+import org.thinkingstudio.bedsheet.util.PistonStructureResolverHooks;
 
 @Mixin(PistonStructureResolver.class)
 public class PistonStructureResolver_customStickyMixin {

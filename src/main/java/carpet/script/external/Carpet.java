@@ -36,7 +36,7 @@ import net.neoforged.fml.ModContainer;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.thinkingstudio.sheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 import javax.annotation.Nullable;
 import java.io.IOException;

@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thinkingstudio.sheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 /**
  * Provides a command line interface to generate a dump with all rules

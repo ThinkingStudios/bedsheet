@@ -1,4 +1,4 @@
-package org.thinkingstudio.sheet;
+package org.thinkingstudio.bedsheet;
 
 import carpet.CarpetServer;
 import carpet.fakes.EntityInterface;
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import static carpet.script.CarpetEventServer.Event.PLAYER_DIES;
 import static carpet.script.CarpetEventServer.Event.PLAYER_SWAPS_HANDS;
 
-public class SheetModEvents {
+public class BedSheetModEvents {
     public static void registerEvents(IEventBus modEventBus, IEventBus forgeEventBus) {
         forgeEventBus.addListener(EventPriority.HIGHEST, RegisterCommandsEvent.class, event -> {
             CarpetServer.registerCarpetCommands(event.getDispatcher(), event.getCommandSelection(), event.getBuildContext());
@@ -43,7 +43,7 @@ public class SheetModEvents {
 
 
         modEventBus.addListener(EventPriority.HIGHEST, RegisterPayloadHandlersEvent.class, event -> {
-            final PayloadRegistrar registrar = event.registrar(SheetModReference.MODID);
+            final PayloadRegistrar registrar = event.registrar(BedSheetModReference.MODID);
 
             registrar.playBidirectional(CarpetClient.CarpetPayload.TYPE, CarpetClient.CarpetPayload.STREAM_CODEC,
                     (payload, context) -> context.handle(payload)

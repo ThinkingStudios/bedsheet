@@ -4,25 +4,25 @@ loaderVersion = "[4,)"
 license = "MIT"
 
 [[mods]]
-modId = "sheet"
+modId = "bedsheet"
 version = "${version}"
-displayName = "Sheet"
-displayURL = "https://github.com/ThinkingStudio/Sheet"
+displayName = "BedSheet"
+displayURL = "https://github.com/ThinkingStudio/bedsheet"
 credits = "gnembon"
 authors = "TexTrue, ThinkingStudio"
 description = '''
 Carpet unofficial NeoForge port.
 '''
-logoFile = "assets/carpet/icon.png"
+logoFile = "icon.png"
 
-[[dependencies.sheet]]
+[[dependencies.bedsheet]]
 modId = "neoforge"
 type = "required"
 versionRange = "[21.3,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.sheet]]
+[[dependencies.bedsheet]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21.3,)"

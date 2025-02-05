@@ -1,4 +1,4 @@
-package org.thinkingstudio.sheet.util;
+package org.thinkingstudio.bedsheet.util;
 
 import cpw.mods.modlauncher.ArgumentHandler;
 import cpw.mods.modlauncher.Launcher;
