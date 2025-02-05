@@ -73,15 +73,16 @@ public abstract class ServerPlayer_scarpetEventMixin extends Player implements S
         STATISTICS.onPlayerStatistic((ServerPlayer) (Object)this, stat, amount);
     }
 
-    @Inject(method = "die", at = @At("HEAD"))
-    private void onDeathEvent(DamageSource source, CallbackInfo ci)
-    {
-        ((EntityInterface)this).getEventContainer().onEvent(EntityEventsGroup.Event.ON_DEATH, source.getMsgId());
-        if (PLAYER_DIES.isNeeded())
-        {
-            PLAYER_DIES.onPlayerEvent((ServerPlayer) (Object)this);
-        }
-    }
+    // use LivingDeathEvent replace
+//    @Inject(method = "die", at = @At("HEAD"))
+//    private void onDeathEvent(DamageSource source, CallbackInfo ci)
+//    {
+//        ((EntityInterface)this).getEventContainer().onEvent(EntityEventsGroup.Event.ON_DEATH, source.getMsgId());
+//        if (PLAYER_DIES.isNeeded())
+//        {
+//            PLAYER_DIES.onPlayerEvent((ServerPlayer) (Object)this);
+//        }
+//    }
 
     @Redirect(method = "setPlayerInput", at = @At(
             value = "INVOKE",

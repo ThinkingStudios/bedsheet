@@ -30,8 +30,8 @@ import net.minecraft.world.level.border.WorldBorder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thinkingstudio.sheet.util.NeoHooks;
-import org.thinkingstudio.sheet.SheetModReference;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.BedSheetModReference;
 
 import java.util.Optional;
 
@@ -50,12 +50,12 @@ import static carpet.api.settings.RuleCategory.CLIENT;
 @SuppressWarnings({"CanBeFinal", "removal"}) // removal should be removed after migrating rules to the new system
 public class CarpetSettings
 {
-    public static final String carpetVersion = NeoHooks.getModContainer(SheetModReference.MODID).orElseThrow().getModInfo().getVersion().toString();
+    public static final String carpetVersion = NeoHooks.getModContainer(BedSheetModReference.MODID).orElseThrow().getModInfo().getVersion().toString();
     public static final int [] releaseTarget =  {
             NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMajorVersion(),
             NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getIncrementalVersion()
     };
-    public static final Logger LOG = LoggerFactory.getLogger(SheetModReference.MODNAME);
+    public static final Logger LOG = LoggerFactory.getLogger(BedSheetModReference.MODNAME);
     public static final ThreadLocal<Boolean> skipGenerationChecks = ThreadLocal.withInitial(() -> false);
     public static final ThreadLocal<Boolean> impendingFillSkipUpdates = ThreadLocal.withInitial(() -> false);
     public static int runPermissionLevel = 2;

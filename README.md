@@ -4,7 +4,7 @@
 
 Sheet is unofficial Carpet Mod [NeoForge](https://neoforged.net/) port, for Minecraft 1.21.x and above.  
 
-Carpet Mod is a mod for vanilla Minecraft that allows you to take full control of what matters from a technical perspective of the game.
+Carpet Mod is a mod for Minecraft that allows you to take full control of what matters from a technical perspective of the game.
 
 * Test your farms over several hours in only a few minutes using [`/tick warp`](https://github.com/gnembon/fabric-carpet/wiki/Commands#usage-tick-warp-ticks-cmd), as fast as your computer can
 * ...and then see a detailed breakdown of the items they produce using [`hopperCounters`](https://github.com/gnembon/fabric-carpet/wiki/Current-Available-Settings#hoppercounters)

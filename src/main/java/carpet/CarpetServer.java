@@ -39,7 +39,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.commands.PerfCommand;
 import net.minecraft.server.level.ServerPlayer;
-import org.thinkingstudio.sheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 @SuppressWarnings("removal")
 public class CarpetServer // static for now - easier to handle all around the code, its one anyways

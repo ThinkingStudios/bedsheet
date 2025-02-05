@@ -83,7 +83,7 @@ import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.neoforged.neoforgespi.language.IModInfo;
-import org.thinkingstudio.sheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 import java.util.Collection;
 import java.util.HashMap;
