@@ -111,5 +111,17 @@ publishing {
 		maven {
 			url "$projectDir/publish"
 		}
+
+		maven {
+			name = "cloudsmith"
+			url = "https://maven.cloudsmith.io/thinkingstudio/bedsheet/"
+			def releasesRepoUrl = "https://maven.cloudsmith.io/thinkingstudio/bedsheet/"
+			def snapshotsRepoUrl = "https://maven.cloudsmith.io/thinkingstudio/bedsheet/"
+			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+			credentials {
+				username = 'tex-true'
+				password = System.getenv("CLOUDSMITH_MAVEN_TOKEN")
+			}
+		}
 	}
 }
