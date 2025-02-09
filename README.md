@@ -1,6 +1,7 @@
 <img src="./src/main/resources/icon.png" align="right" width="128px"/>
 
 # BedSheet
+[![Hosted By: Cloudsmith](https://img.shields.io/badge/OSS%20hosting%20by-cloudsmith-blue?logo=cloudsmith&style=flat-square)](https://cloudsmith.com)
 
 Sheet is unofficial Carpet Mod [NeoForge](https://neoforged.net/) port, for Minecraft 1.21.x and above.  
 

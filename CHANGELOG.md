@@ -1,2 +1,2 @@
 ## Changelog
-- first release
+- cloudsmith maven
