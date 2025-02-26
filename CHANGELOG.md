@@ -1,2 +1,2 @@
 ## Changelog
-- cloudsmith maven
+- fix permissionMixin
