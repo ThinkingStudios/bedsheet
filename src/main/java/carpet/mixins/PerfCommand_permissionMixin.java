@@ -14,7 +14,7 @@ public class PerfCommand_permissionMixin
     // method_37340 is intermediary name
     // lambda$register$0 is mojmap name
     // NeoForge NOT HAVE intermediary name!
-    @Inject(method = {"method_37340", "lambda$register$0"}, at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "lambda$register$0", at = @At("HEAD"), cancellable = true) // NeoForge 1.21.4 fix, this modify is worked
     private static void canRun(CommandSourceStack source, CallbackInfoReturnable<Boolean> cir)
     {
         cir.setReturnValue(source.hasPermission(CarpetSettings.perfPermissionLevel));
