@@ -1,2 +1,2 @@
 ## Changelog
-- fix permissionMixin
+- try fix #4
