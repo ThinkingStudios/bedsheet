@@ -98,7 +98,6 @@ publisher {
 	displayName = "$project.version"
 	gameVersions = ["1.21.4"]
 	loaders = loom.platform.get().id()
-	curseEnvironment = "$project.env_type"
 	setVersion("$project.version")
 	setArtifact(remapJar)
 	addAdditionalFile(sourcesJar)
