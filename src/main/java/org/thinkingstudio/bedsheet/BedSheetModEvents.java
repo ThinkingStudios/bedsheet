@@ -6,9 +6,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+
+import static carpet.script.CarpetEventServer.Event.PLAYER_SWAPS_HANDS;
 
 public class BedSheetModEvents {
     public static void registerEvents(IEventBus modEventBus, IEventBus forgeEventBus) {
@@ -18,6 +21,13 @@ public class BedSheetModEvents {
         forgeEventBus.addListener(EventPriority.HIGHEST, PlayerEvent.PlayerLoggedInEvent.class, event -> {
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 CarpetServer.onPlayerLoggedIn(serverPlayer);
+            }
+        });
+        forgeEventBus.addListener(EventPriority.HIGHEST, LivingSwapItemsEvent.Hands.class, event -> {
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+                if (PLAYER_SWAPS_HANDS.onPlayerEvent(serverPlayer)) {
+                    event.isCanceled();
+                }
             }
         });
 
