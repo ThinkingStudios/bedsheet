@@ -1,2 +1,2 @@
 ## Changelog
-- fix `releaseTarget`
+- rework `customSticky` mixin
