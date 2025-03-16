@@ -9,8 +9,6 @@ import carpet.settings.Rule;
 import carpet.utils.Translations;
 import carpet.utils.CommandHelper;
 import carpet.utils.Messenger;
-//import net.fabricmc.loader.api.FabricLoader;
-//import net.fabricmc.loader.api.SemanticVersion;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -52,7 +50,7 @@ public class CarpetSettings
 {
     public static final String carpetVersion = NeoHooks.getModContainer(BedSheetModReference.MODID).orElseThrow().getModInfo().getVersion().toString();
     public static final int [] releaseTarget =  {
-            NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMajorVersion(),
+            NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMinorVersion(),
             NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getIncrementalVersion()
     };
     public static final Logger LOG = LoggerFactory.getLogger(BedSheetModReference.MODNAME);
