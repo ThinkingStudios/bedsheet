@@ -14,6 +14,7 @@ description = '''
 Carpet unofficial NeoForge port.
 '''
 logoFile = "icon.png"
+displayTest = "IGNORE_SERVER_VERSION"
 
 [[dependencies.bedsheet]]
 modId = "neoforge"
@@ -31,3 +32,6 @@ side = "BOTH"
 
 [[mixins]]
 config = "carpet.mixins.json"
+
+[[mixins]]
+config = "bedsheet.mixins.json"

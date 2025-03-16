@@ -17,7 +17,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
-import org.thinkingstudio.bedsheet.util.PistonStructureResolverHooks;
 
 @Mixin(PistonStructureResolver.class)
 public class PistonStructureResolver_customStickyMixin {
@@ -25,11 +24,12 @@ public class PistonStructureResolver_customStickyMixin {
     @Shadow @Final private Level level;
     @Shadow @Final private Direction pushDirection;
 
-    // NeoForge patched, see PistonStructureResolverHelper
+    // NeoForge patched, use state.canStickTo(BlockState)
 //    @Shadow private static boolean canStickToEachOther(BlockState blockState, BlockState blockState2) {
 //        throw new AssertionError();
 //    }
 //
+    // NeoForge patched, inject IBlockExtension.isStickyBlock(BlockState)
 //    @Inject(
 //        method = "isSticky",
 //        cancellable = true,
@@ -73,7 +73,7 @@ public class PistonStructureResolver_customStickyMixin {
             return behaviourInterface.isStickyToNeighbor(level, pos_addBlockLine, state, behindPos_addBlockLine, behindState, pushDirection.getOpposite(), pushDirection);
         }
 
-        return PistonStructureResolverHooks.isAdjacentBlockStuck(state, behindState);
+        return state.canStickTo(behindState);
     }
 
     // fields that are needed because @Redirects cannot capture locals
@@ -106,6 +106,6 @@ public class PistonStructureResolver_customStickyMixin {
             return behaviourInterface.isStickyToNeighbor(level, pos, state, neighborPos_addBranchingBlocks, neighborState, dir_addBranchingBlocks, pushDirection);
         }
 
-        return PistonStructureResolverHooks.isAdjacentBlockStuck(neighborState, state);
+        return neighborState.canStickTo(state);
     }
 }
