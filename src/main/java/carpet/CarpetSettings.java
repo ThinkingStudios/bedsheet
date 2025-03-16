@@ -52,7 +52,7 @@ public class CarpetSettings
 {
     public static final String carpetVersion = NeoHooks.getModContainer(BedSheetModReference.MODID).orElseThrow().getModInfo().getVersion().toString();
     public static final int [] releaseTarget =  {
-            NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMajorVersion(),
+            NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMinorVersion(),
             NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getIncrementalVersion()
     };
     public static final Logger LOG = LoggerFactory.getLogger(BedSheetModReference.MODNAME);

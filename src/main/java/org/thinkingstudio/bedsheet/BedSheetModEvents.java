@@ -16,7 +16,9 @@ public class BedSheetModEvents {
             CarpetServer.registerCarpetCommands(event.getDispatcher(), event.getCommandSelection(), event.getBuildContext());
         });
         forgeEventBus.addListener(EventPriority.HIGHEST, PlayerEvent.PlayerLoggedInEvent.class, event -> {
-            CarpetServer.onPlayerLoggedIn((ServerPlayer) event.getEntity());
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+                CarpetServer.onPlayerLoggedIn(serverPlayer);
+            }
         });
 
         modEventBus.addListener(EventPriority.HIGHEST, RegisterPayloadHandlersEvent.class, event -> {

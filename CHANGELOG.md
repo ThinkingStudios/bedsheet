@@ -1,2 +1,2 @@
 ## Changelog
-- try fix #4
+- fix `releaseTarget`
