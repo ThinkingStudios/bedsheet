@@ -45,8 +45,6 @@ import carpet.utils.CommandHelper;
 import carpet.utils.Messenger;
 import carpet.utils.TranslationKeys;
 import carpet.utils.Translations;
-//import net.fabricmc.api.EnvType;
-//import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;

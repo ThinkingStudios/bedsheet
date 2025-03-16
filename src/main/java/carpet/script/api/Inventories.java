@@ -132,14 +132,15 @@ public class Inventories
 
 
                 List<Value> ingredientValue = new ArrayList<>();
-                for (int info : recipe.placementInfo().slotsToIngredientIndex())
+                for (Optional<PlacementInfo.SlotInfo> info : recipe.placementInfo().slotInfo())
                 {
-                    if (info == PlacementInfo.EMPTY_SLOT)
+                    if (info.isEmpty())
                     {
                         ingredientValue.add(Value.NULL);
                         continue;
                     }
-                    int ingredientIndex = info;
+                    PlacementInfo.SlotInfo value = info.get();
+                    int ingredientIndex = value.placerOutputPosition();
 
                     List<Value> alternatives = new ArrayList<>();
                     recipe.placementInfo().ingredients().get(ingredientIndex).items().forEach(item -> alternatives.add(ValueConversions.of(item.value(), regs)));

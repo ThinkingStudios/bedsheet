@@ -28,8 +28,8 @@ import net.minecraft.world.level.border.WorldBorder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thinkingstudio.bedsheet.util.NeoHooks;
 import org.thinkingstudio.bedsheet.BedSheetModReference;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 import java.util.Optional;
 
@@ -73,7 +73,7 @@ public class CarpetSettings
     @Rule(
             desc = "Sets the language for Carpet",
             category = FEATURE,
-            options = {"en_us", "fr_fr", "es_ar","pt_br", "zh_cn", "zh_tw"},
+            options = {"en_us", "fr_fr", "pt_br", "zh_cn", "zh_tw"},
             strict = true, // the current system doesn't handle fallbacks and other, not defined languages would make unreadable mess. Change later
             validate = LanguageValidator.class
     )

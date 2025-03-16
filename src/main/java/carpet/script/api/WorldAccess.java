@@ -151,7 +151,7 @@ public class WorldAccess
 
     private static final Map<String, TicketType<?>> ticketTypes = Map.of(
             "portal", TicketType.PORTAL,
-            "teleport", TicketType.ENDER_PEARL,
+            "teleport", TicketType.POST_TELEPORT,
             "unknown", TicketType.UNKNOWN
     );
     // dummy entity for dummy requirements in the loot tables (see snowball)
@@ -1694,9 +1694,9 @@ public class WorldAccess
             {
                 cc.level().getChunkSource().addRegionTicket(TicketType.PORTAL, target, radius, pos);
             }
-            else if (ticket == TicketType.ENDER_PEARL) // post teleport
+            else if (ticket == TicketType.POST_TELEPORT) // post teleport
             {
-                cc.level().getChunkSource().addRegionTicket(TicketType.ENDER_PEARL, target, radius, target);
+                cc.level().getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, target, radius, 1);
             }
             else
             {

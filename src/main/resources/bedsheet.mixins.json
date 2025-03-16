@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "org.thinkingstudio.bedsheet.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "IBlockExtensionMixin"
+  ],
+  "client": [
+
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

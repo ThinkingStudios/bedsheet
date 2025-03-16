@@ -11,13 +11,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ReloadCommand.class)
 public class ReloadCommand_reloadAppsMixin {
-    // method_13530(Lcom/mojang/brigadier/context/CommandContext;)I = lambda$register$3(Lcom/mojang/brigadier/context/CommandContext;)I
+    // method_13530(Lcom/mojang/brigadier/context/CommandContext;)I
     // internal of register.
-    // dev & compile use intermediary name, runtime use mojmap name
-    @Inject(method = {
-            "method_13530(Lcom/mojang/brigadier/context/CommandContext;)I", // dev & compile
-            "lambda$register$3(Lcom/mojang/brigadier/context/CommandContext;)I" // runtime
-    }, at = @At("TAIL"), remap = false)
+    // method_13530 is intermediary name
+    // lambda$register$3 is mojmap name
+    // NeoForge NOT HAVE intermediary name!
+    @Inject(method = {"method_13530", "lambda$register$3"}, at = @At("TAIL"), remap = false)
     private static void onReload(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir)
     {
         // can't fetch here the reference to the server

@@ -31,8 +31,6 @@ import carpet.utils.CommandHelper;
 import carpet.utils.SpawnReporter;
 import com.mojang.brigadier.CommandDispatcher;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-//import net.fabricmc.loader.api.FabricLoader;
-//import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.blocks.BlockInput;
 import net.minecraft.core.BlockPos;

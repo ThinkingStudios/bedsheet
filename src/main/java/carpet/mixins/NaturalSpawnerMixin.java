@@ -183,7 +183,7 @@ public class NaturalSpawnerMixin
 //    {
 //        if (!SpawnReporter.mockSpawns) // WorldAccess
 //            return mobEntity.finalizeSpawn(serverWorldAccess, difficulty, spawnReason, entityData);
-//        return null;
+//        return entityData;
 //    }
 
     @Redirect(method = "spawnCategoryForPosition(Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/NaturalSpawner$SpawnPredicate;Lnet/minecraft/world/level/NaturalSpawner$AfterSpawnCallback;)V", at = @At(

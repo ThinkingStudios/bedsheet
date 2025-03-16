@@ -5,8 +5,6 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import joptsimple.util.PathConverter;
-//import net.fabricmc.api.DedicatedServerModInitializer;
-//import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -25,7 +23,7 @@ import org.thinkingstudio.bedsheet.util.NeoHooks;
  * category filter
  *
  */
-public class CarpetRulePrinter /*implements DedicatedServerModInitializer*/ {
+public class CarpetRulePrinter {
     public static void onInitializeServer() {
         // When launching, we use the "--" separator to prevent the game rejecting to launch because of unknown options
         // Clear it in case it's present given else our option parser would also ignore them!
