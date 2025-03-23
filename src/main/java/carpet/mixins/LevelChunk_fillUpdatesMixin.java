@@ -22,7 +22,7 @@ public class LevelChunk_fillUpdatesMixin
     private void onAdded(BlockState blockState, Level world, BlockPos blockPos, BlockState state, boolean b, Operation<Void> original)
     {
         if (!CarpetSettings.impendingFillSkipUpdates.get()) {
-            blockState.onPlace(world, blockPos, blockState, b);
+            blockState.onPlace(world, blockPos, state, b);
         } else {
             original.call(blockState, world, blockPos, state, b);
         }
