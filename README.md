@@ -2,7 +2,7 @@
 
 # Sheet
 
-Sheet is unofficial Carpet Mod [NeoForge](https://neoforged.net/) port, for Minecraft 1.21.x and above.  
+BedSheet is unofficial Carpet Mod [NeoForge](https://neoforged.net/) port, for Minecraft 1.21.x and above.  
 
 Carpet Mod is a mod for Minecraft that allows you to take full control of what matters from a technical perspective of the game.
 
