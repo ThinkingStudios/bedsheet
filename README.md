@@ -3,7 +3,7 @@
 # BedSheet
 [![Hosted By: Cloudsmith](https://img.shields.io/badge/OSS%20hosting%20by-cloudsmith-blue?logo=cloudsmith&style=flat-square)](https://cloudsmith.com)
 
-Sheet is unofficial Carpet Mod [NeoForge](https://neoforged.net/) port, for Minecraft 1.21.x and above.  
+BedSheet is unofficial Carpet Mod [NeoForge](https://neoforged.net/) port, for Minecraft 1.21.x and above.  
 
 Carpet Mod is a mod for Minecraft that allows you to take full control of what matters from a technical perspective of the game.
 
