@@ -3,6 +3,8 @@ package carpet.mixins;
 import carpet.CarpetSettings;
 import carpet.fakes.PistonBlockEntityInterface;
 import com.google.common.collect.Lists;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -56,16 +58,15 @@ public abstract class PistonBaseBlock_movableBEMixin extends DirectionalBlock
                        block != Blocks.SPAWNER;
     }
     
-    @Redirect(method = "isPushable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;hasBlockEntity()Z"))
-    private static boolean ifHasBlockEntity(BlockState blockState)
+    @WrapOperation(method = "isPushable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;hasBlockEntity()Z"))
+    private static boolean ifHasBlockEntity(BlockState blockState, Operation<Boolean> original)
     {
-        if (!blockState.hasBlockEntity())
-        {
+        if (!blockState.hasBlockEntity()) {
             return false;
-        }
-        else
-        {
+        } else if (blockState.hasBlockEntity()) {
             return !(CarpetSettings.movableBlockEntities && isPushableBlockEntity(blockState.getBlock()));
+        } else {
+            return original.call(blockState);
         }
     }
 
@@ -129,10 +130,10 @@ public abstract class PistonBaseBlock_movableBEMixin extends DirectionalBlock
     {
     }
     
-    @Redirect(method = "moveBlocks", at = @At(value = "INVOKE",
+    @WrapOperation(method = "moveBlocks", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/level/block/piston/MovingPistonBlock;newMovingBlockEntity(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;ZZ)Lnet/minecraft/world/level/block/entity/BlockEntity;",
             ordinal = 0))
-    private BlockEntity returnNull(BlockPos blockPos, BlockState blockState, BlockState blockState2, Direction direction, boolean bl, boolean bl2)
+    private BlockEntity returnNull(BlockPos pos, BlockState blockState, BlockState movedState, Direction direction, boolean extending, boolean isSourcePiston, Operation<BlockEntity> original)
     {
         return null;
     }

@@ -1,2 +1,2 @@
 ## Changelog
-- fix when piston moving some powered components (#6)
+- fix compat with AnvilCraft's `PistonBaseBlockMixin` (#7)
