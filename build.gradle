@@ -1,30 +1,36 @@
 plugins {
-	id 'fabric-loom' version '1.9-SNAPSHOT'
-	id 'io.github.juuxel.loom-quiltflower' version '1.7.3'
+	id "dev.architectury.loom" version "1.10-SNAPSHOT"
 	id 'maven-publish'
+	id "com.hypherionmc.modutils.modpublisher" version "2.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_21
 targetCompatibility = JavaVersion.VERSION_21
 
-archivesBaseName = project.archives_base_name
-version = project.minecraft_version+'-'+project.mod_version+'+v'+new Date().format('yyMMdd')
+archivesBaseName = "$project.archives_base_name-${loom.platform.get().id()}"
+version = "$project.mod_version+mc$project.minecraft_version"
 group = project.maven_group
 
 loom {
 	accessWidenerPath = file("src/main/resources/carpet.accesswidener")
 	runtimeOnlyLog4j = true
+
+	silentMojangMappingsLicense()
+}
+
+repositories {
+	// Add NeoForged repository.
+	maven {
+		name = 'NeoForged'
+		url = 'https://maven.neoforged.net/releases'
+	}
 }
 
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.officialMojangMappings()
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	//modImplementation "net.fabricmc:fabric:${project.fabric_version}"
-	//modCompileOnly fabricApi.module("fabric-rendering-v1", project.fabric_version)
+	neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
@@ -32,10 +38,10 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version+'+v'+new Date().format('yyMMdd')
+	inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.mod_version+'+v'+new Date().format('yyMMdd')
+	filesMatching("META-INF/neoforge.mods.toml") {
+		expand "version": project.version
 	}
 }
 
@@ -64,6 +70,26 @@ jar {
 	}
 }
 
+remapJar {
+	atAccessWideners.add("carpet.accesswidener")
+}
+
+publisher {
+	apiKeys.modrinth(System.getenv("MODRINTH_TOKEN"))
+	apiKeys.curseforge(System.getenv("CURSEFORGE_TOKEN"))
+
+	curseID = "$project.curseforge_id"
+	modrinthID = "$project.modrinth_id"
+	versionType = "$project.release_type"
+	changelog = file("CHANGELOG.md").getText("UTF-8")
+	displayName = "$project.version"
+	gameVersions = ["1.21.5"]
+	loaders = loom.platform.get().id()
+	setVersion("$project.version")
+	setArtifact(remapJar)
+	addAdditionalFile(sourcesJar)
+}
+
 // configure the maven publication
 publishing {
 	publications {
@@ -78,6 +104,18 @@ publishing {
 		// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 		maven {
 			url "$projectDir/publish"
+		}
+
+		maven {
+			name = "cloudsmith"
+			url = "https://maven.cloudsmith.io/thinkingstudio/bedsheet/"
+			def releasesRepoUrl = "https://maven.cloudsmith.io/thinkingstudio/bedsheet/"
+			def snapshotsRepoUrl = "https://maven.cloudsmith.io/thinkingstudio/bedsheet/"
+			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+			credentials {
+				username = 'tex-true'
+				password = System.getenv("CLOUDSMITH_MAVEN_TOKEN")
+			}
 		}
 	}
 }

@@ -179,7 +179,6 @@
 
     "DefaultRedstoneWireEvaluator_redstoneMixin",
 
-    "CustomPacketPayload_networkStuffMixin",
     "ServerGamePacketListenerimpl_connectionMixin"
 
   ],

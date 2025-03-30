@@ -31,8 +31,6 @@ import carpet.utils.CommandHelper;
 import carpet.utils.SpawnReporter;
 import com.mojang.brigadier.CommandDispatcher;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.blocks.BlockInput;
 import net.minecraft.core.BlockPos;
@@ -73,6 +71,8 @@ import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import net.neoforged.neoforgespi.language.IModInfo;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 import java.util.HashMap;
 import java.util.List;
@@ -169,15 +169,15 @@ public class Vanilla
 
     public static boolean isDevelopmentEnvironment()
     {
-        return FabricLoader.getInstance().isDevelopmentEnvironment();
+        return NeoHooks.isDevelopmentEnvironment();
     }
 
     public static MapValue getServerMods(MinecraftServer server)
     {
         Map<Value, Value> ret = new HashMap<>();
-        for (ModContainer mod : FabricLoader.getInstance().getAllMods())
+        for (IModInfo mod : NeoHooks.getAllMods())
         {
-            ret.put(new StringValue(mod.getMetadata().getId()), new StringValue(mod.getMetadata().getVersion().getFriendlyString()));
+            ret.put(new StringValue(mod.getModId()), new StringValue(mod.getVersion().toString()));
         }
         return MapValue.wrap(ret);
     }

@@ -24,22 +24,24 @@ public class PistonStructureResolver_customStickyMixin {
     @Shadow @Final private Level level;
     @Shadow @Final private Direction pushDirection;
 
-    @Shadow private static boolean canStickToEachOther(BlockState blockState, BlockState blockState2) {
-        throw new AssertionError();
-    }
-
-    @Inject(
-        method = "isSticky",
-        cancellable = true,
-        at = @At(
-            value = "HEAD"
-        )
-    )
-    private static void isSticky(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (state.getBlock() instanceof BlockPistonBehaviourInterface behaviourInterface){
-            cir.setReturnValue(behaviourInterface.isSticky(state));
-        }
-    }
+    // NeoForge patched, use state.canStickTo(BlockState)
+//    @Shadow private static boolean canStickToEachOther(BlockState blockState, BlockState blockState2) {
+//        throw new AssertionError();
+//    }
+//
+    // NeoForge patched, inject IBlockExtension.isStickyBlock(BlockState)
+//    @Inject(
+//        method = "isSticky",
+//        cancellable = true,
+//        at = @At(
+//            value = "HEAD"
+//        )
+//    )
+//    private static void isSticky(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+//        if (state.getBlock() instanceof BlockPistonBehaviourInterface behaviourInterface){
+//            cir.setReturnValue(behaviourInterface.isSticky(state));
+//        }
+//    }
 
     // fields that are needed because @Redirects cannot capture locals
     @Unique private BlockPos pos_addBlockLine;
@@ -54,7 +56,7 @@ public class PistonStructureResolver_customStickyMixin {
             target = "Lnet/minecraft/world/level/Level;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"
         )
     )
-    private void captureBlockLinePositions(BlockPos pos, Direction fromDir, CallbackInfoReturnable<Boolean> cir, BlockState state, int dst, BlockPos behindPos) {
+    private void captureBlockLinePositions(BlockPos originPos, Direction fromDir, CallbackInfoReturnable<Boolean> cir, BlockState state, int dst, BlockState oldState, BlockPos behindPos) {
         pos_addBlockLine = behindPos.relative(pushDirection);
         behindPos_addBlockLine = behindPos;
     }
@@ -63,7 +65,7 @@ public class PistonStructureResolver_customStickyMixin {
         method = "addBlockLine",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/level/block/piston/PistonStructureResolver;canStickToEachOther(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;)Z"
+            target = "Lnet/minecraft/world/level/block/state/BlockState;canStickTo(Lnet/minecraft/world/level/block/state/BlockState;)Z"
         )
     )
     private boolean onAddBlockLineCanStickToEachOther(BlockState state, BlockState behindState) {
@@ -71,7 +73,7 @@ public class PistonStructureResolver_customStickyMixin {
             return behaviourInterface.isStickyToNeighbor(level, pos_addBlockLine, state, behindPos_addBlockLine, behindState, pushDirection.getOpposite(), pushDirection);
         }
 
-        return canStickToEachOther(state, behindState);
+        return state.canStickTo(behindState);
     }
 
     // fields that are needed because @Redirects cannot capture locals
@@ -96,7 +98,7 @@ public class PistonStructureResolver_customStickyMixin {
         method = "addBranchingBlocks",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/level/block/piston/PistonStructureResolver;canStickToEachOther(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;)Z"
+            target = "Lnet/minecraft/world/level/block/state/BlockState;canStickTo(Lnet/minecraft/world/level/block/state/BlockState;)Z"
         )
     )
     private boolean onAddBranchingBlocksCanStickToEachOther(BlockState neighborState, BlockState state, BlockPos pos) {
@@ -104,6 +106,6 @@ public class PistonStructureResolver_customStickyMixin {
             return behaviourInterface.isStickyToNeighbor(level, pos, state, neighborPos_addBranchingBlocks, neighborState, dir_addBranchingBlocks, pushDirection);
         }
 
-        return canStickToEachOther(neighborState, state);
+        return neighborState.canStickTo(state);
     }
 }

@@ -1,6 +1,8 @@
 package carpet.mixins;
 
 import carpet.CarpetSettings;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -37,15 +39,17 @@ public class LevelChunk_fillUpdatesMixin
         }
     }
 
-    @Redirect(method = "setBlockState", at = @At(
+    @WrapOperation(method = "setBlockState", at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/world/level/block/state/BlockState;affectNeighborsAfterRemoval(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Z)V"
     ))
-    private void onAffectNeighborsAfterRemoval(final BlockState instance, final ServerLevel serverLevel, final BlockPos blockPos, final boolean b)
+    private void onAffectNeighborsAfterRemoval(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, boolean b, Operation<Void> original)
     {
         if (!CarpetSettings.impendingFillSkipUpdates.get())
         {
-            instance.affectNeighborsAfterRemoval(serverLevel, blockPos, b);
+            blockState.affectNeighborsAfterRemoval(serverLevel, blockPos, b);
+        } else {
+            original.call(blockState, serverLevel, blockPos, b);
         }
     }
 }

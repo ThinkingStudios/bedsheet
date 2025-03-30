@@ -46,14 +46,13 @@ import carpet.utils.CommandHelper;
 import carpet.utils.Messenger;
 import carpet.utils.TranslationKeys;
 import carpet.utils.Translations;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.storage.LevelResource;
+import org.thinkingstudio.bedsheet.util.NeoHooks;
 
 import static carpet.utils.Translations.tr;
 import static java.util.Comparator.comparing;
@@ -462,9 +461,9 @@ public class SettingsManager {
         }
         catch (NoSuchFileException e)
         {
-            if (path.equals(getFile()) && FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+            if (path.equals(getFile()) && NeoHooks.getEnvironmentType().isClient())
             {
-                Path defaultsPath = FabricLoader.getInstance().getConfigDir().resolve("carpet/default_"+identifier+".conf");
+                Path defaultsPath = NeoHooks.getConfigDir().resolve("carpet/default_"+identifier+".conf");
                 try {
                     if (Files.notExists(defaultsPath))
                     {
