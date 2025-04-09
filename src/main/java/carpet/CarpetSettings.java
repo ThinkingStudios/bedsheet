@@ -29,7 +29,7 @@ import net.minecraft.world.level.border.WorldBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thinkingstudio.bedsheet.BedSheetModReference;
-import org.thinkingstudio.bedsheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.loader.FoxifiedLoader;
 
 import java.util.Optional;
 
@@ -48,10 +48,10 @@ import static carpet.api.settings.RuleCategory.CLIENT;
 @SuppressWarnings({"CanBeFinal", "removal"}) // removal should be removed after migrating rules to the new system
 public class CarpetSettings
 {
-    public static final String carpetVersion = NeoHooks.getModContainer(BedSheetModReference.MODID).orElseThrow().getModInfo().getVersion().toString();
+    public static final String carpetVersion = FoxifiedLoader.getModContainer(BedSheetModReference.MODID).orElseThrow().getModInfo().getVersion().toString();
     public static final int [] releaseTarget =  {
-            NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMinorVersion(),
-            NeoHooks.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getIncrementalVersion()
+            FoxifiedLoader.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getMinorVersion(),
+            FoxifiedLoader.getModContainer("minecraft").orElseThrow().getModInfo().getVersion().getIncrementalVersion()
     };
     public static final Logger LOG = LoggerFactory.getLogger(BedSheetModReference.MODNAME);
     public static final ThreadLocal<Boolean> skipGenerationChecks = ThreadLocal.withInitial(() -> false);

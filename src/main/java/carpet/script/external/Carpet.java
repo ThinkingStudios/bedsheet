@@ -29,7 +29,7 @@ import net.neoforged.fml.ModContainer;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.thinkingstudio.bedsheet.util.NeoHooks;
+import org.thinkingstudio.bedsheet.loader.FoxifiedLoader;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -142,9 +142,9 @@ public class Carpet
     @Nullable
     public static Module fetchGlobalModule(String name, boolean allowLibraries) throws IOException
     {
-        if (NeoHooks.isDevelopmentEnvironment())
+        if (FoxifiedLoader.isDevelopmentEnvironment())
         {
-            Path globalFolder = NeoHooks.getConfigDir().resolve("carpet/scripts");
+            Path globalFolder = FoxifiedLoader.getConfigDir().resolve("carpet/scripts");
             if (!Files.exists(globalFolder))
             {
                 Files.createDirectories(globalFolder);
@@ -166,9 +166,9 @@ public class Carpet
 
     public static void addGlobalModules(final List<String> moduleNames, boolean includeBuiltIns) throws IOException
     {
-        if (includeBuiltIns && (NeoHooks.getEnvironmentType().isClient()))
+        if (includeBuiltIns && (FoxifiedLoader.getEnvironmentType().isClient()))
         {
-            Path globalScripts = NeoHooks.getConfigDir().resolve("carpet/scripts");
+            Path globalScripts = FoxifiedLoader.getConfigDir().resolve("carpet/scripts");
             if (!Files.exists(globalScripts))
             {
                 Files.createDirectories(globalScripts);
@@ -194,11 +194,11 @@ public class Carpet
             throw new InternalExpressionException("Failed to parse version conditions for '" + requiredModId + "' in 'requires': " + e.getMessage());
         }
 
-        ModContainer mod = NeoHooks.getModContainer(requiredModId).orElse(null);
+        ModContainer mod = FoxifiedLoader.getModContainer(requiredModId).orElse(null);
         if (mod != null)
         {
             ArtifactVersion presentVersion = mod.getModInfo().getVersion();
-            if (range.containsVersion(presentVersion) || (NeoHooks.isDevelopmentEnvironment() && !(presentVersion instanceof DefaultArtifactVersion)))
+            if (range.containsVersion(presentVersion) || (FoxifiedLoader.isDevelopmentEnvironment() && !(presentVersion instanceof DefaultArtifactVersion)))
             { // in a dev env, mod version is usually replaced with ${version}, and that isn't semantic
                 return;
             }
