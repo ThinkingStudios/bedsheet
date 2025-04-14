@@ -13,10 +13,10 @@ import org.thinkingstudio.bedsheet.loader.entrypoint.EntrypointHandler;
 @Mod(BedSheetModReference.MODID)
 public class BedSheetModEntrypoint {
     public BedSheetModEntrypoint(ModContainer modContainer, IEventBus modEventBus) {
-        EntrypointHandler.init();
-        CarpetServer.onGameStarted();
-        BedSheetModEvents.registerEvents(modEventBus, NeoForge.EVENT_BUS);
+        EntrypointHandler.init(modEventBus);
         if (FMLLoader.getDist().isDedicatedServer()) {
+            CarpetServer.onGameStarted();
+            BedSheetModEvents.registerEvents(modEventBus, NeoForge.EVENT_BUS);
             modContainer.registerExtensionPoint(DedicatedServerModInitializer.class, new CarpetRulePrinter());
         }
     }
