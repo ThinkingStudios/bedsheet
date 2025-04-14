@@ -9,6 +9,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.HandlerThread;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import static carpet.script.CarpetEventServer.Event.PLAYER_SWAPS_HANDS;
@@ -32,7 +33,7 @@ public class BedSheetModEvents {
         });
 
         modEventBus.addListener(EventPriority.HIGHEST, RegisterPayloadHandlersEvent.class, event -> {
-            final PayloadRegistrar registrar = event.registrar(BedSheetModReference.MODID);
+            final PayloadRegistrar registrar = event.registrar(BedSheetModReference.MODID).executesOn(HandlerThread.MAIN);
 
             registrar.playBidirectional(CarpetClient.CarpetPayload.TYPE, CarpetClient.CarpetPayload.STREAM_CODEC,
                     (payload, context) -> context.handle(payload)

@@ -1,4 +1,4 @@
-package org.thinkingstudio.bedsheet.util;
+package org.thinkingstudio.bedsheet.loader;
 
 import cpw.mods.modlauncher.ArgumentHandler;
 import cpw.mods.modlauncher.Launcher;
@@ -14,8 +14,12 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
-public class NeoHooks {
+public class FoxifiedLoader {
     private static String[] launchArgs;
+
+    public static boolean isModLoaded(String modId) {
+        return ModList.get().isLoaded(modId);
+    }
 
     public static boolean isDevelopmentEnvironment() {
         return !FMLLoader.isProduction();
@@ -50,5 +54,4 @@ public class NeoHooks {
     public static List<IModInfo> getAllMods() {
         return ModList.get().getMods();
     }
-
 }
