@@ -17,6 +17,10 @@ public class EntrypointHandler {
                     Optional<DedicatedServerModInitializer> serverModInitializer = modContainer.getCustomExtension(DedicatedServerModInitializer.class);
                     serverModInitializer.ifPresent(DedicatedServerModInitializer::onInitializeServer);
                 }
+                if (FMLLoader.getDist().isClient()) {
+                    Optional<ClientModInitializer> clientModInitializer = modContainer.getCustomExtension(ClientModInitializer.class);
+                    clientModInitializer.ifPresent(ClientModInitializer::onInitializeClient);
+                }
             });
         });
     }
