@@ -16,7 +16,9 @@ import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thinkingstudio.bedsheet.util.NeoHooks;
+
+import org.thinkingstudio.bedsheet.loader.FoxifiedLoader;
+import org.thinkingstudio.bedsheet.loader.entrypoint.DedicatedServerModInitializer;
 
 /**
  * Provides a command line interface to generate a dump with all rules
@@ -24,11 +26,12 @@ import org.thinkingstudio.bedsheet.util.NeoHooks;
  * category filter
  *
  */
-public class CarpetRulePrinter {
-    public static void onInitializeServer() {
+public class CarpetRulePrinter implements DedicatedServerModInitializer {
+    @Override
+    public void onInitializeServer() {
         // When launching, we use the "--" separator to prevent the game rejecting to launch because of unknown options
         // Clear it in case it's present given else our option parser would also ignore them!
-        String[] args = Arrays.stream(NeoHooks.getLaunchArguments(true)).filter(opt -> !opt.equals("--")).toArray(String[]::new);
+        String[] args = Arrays.stream(FoxifiedLoader.getLaunchArguments(true)).filter(opt -> !opt.equals("--")).toArray(String[]::new);
 
         // Prepare an OptionParser for our parameters
         OptionParser parser = new OptionParser();

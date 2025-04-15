@@ -19,14 +19,14 @@ displayTest = "IGNORE_SERVER_VERSION"
 [[dependencies.bedsheet]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.3,)"
+versionRange = "[21.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.bedsheet]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.3,)"
+versionRange = "[1.21.4,)"
 ordering = "NONE"
 side = "BOTH"
 
