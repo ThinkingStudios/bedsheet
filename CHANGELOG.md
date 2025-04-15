@@ -1,2 +1,2 @@
 ## Changelog
-- change: `NeoHooks` -> `FoxifiedLoader`
+- fixes NullPointerException
