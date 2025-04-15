@@ -1,3 +1,3 @@
 ## Changelog
-- change: `NeoHooks` -> `FoxifiedLoader`
-- NeoForge version `21.5.8-beta` -> `21.5.39-beta`
+- fixes NullPointerException
+- NeoForge version `21.5.39-beta` -> `21.5.40-beta`
