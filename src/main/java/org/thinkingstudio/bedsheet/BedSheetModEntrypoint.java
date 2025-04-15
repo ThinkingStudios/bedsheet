@@ -14,9 +14,9 @@ import org.thinkingstudio.bedsheet.loader.entrypoint.EntrypointHandler;
 public class BedSheetModEntrypoint {
     public BedSheetModEntrypoint(ModContainer modContainer, IEventBus modEventBus) {
         EntrypointHandler.init(modEventBus);
+        CarpetServer.onGameStarted();
+        BedSheetModEvents.registerEvents(modEventBus, NeoForge.EVENT_BUS);
         if (FMLLoader.getDist().isDedicatedServer()) {
-            CarpetServer.onGameStarted();
-            BedSheetModEvents.registerEvents(modEventBus, NeoForge.EVENT_BUS);
             modContainer.registerExtensionPoint(DedicatedServerModInitializer.class, new CarpetRulePrinter());
         }
     }
