@@ -17,6 +17,10 @@ import java.util.Optional;
 public class FoxifiedLoader {
     private static String[] launchArgs;
 
+    public static boolean isModLoaded(String modId) {
+        return ModList.get().isLoaded(modId);
+    }
+
     public static boolean isDevelopmentEnvironment() {
         return !FMLLoader.isProduction();
     }
