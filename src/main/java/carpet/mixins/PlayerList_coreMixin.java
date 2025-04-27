@@ -16,11 +16,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerList_coreMixin
 {
 
-    @Inject(method = "placeNewPlayer", at = @At("RETURN"))
-    private void onPlayerConnected(Connection connection, ServerPlayer player, CommonListenerCookie i, CallbackInfo ci)
-    {
-        CarpetServer.onPlayerLoggedIn(player);
-    }
+//    @Inject(method = "placeNewPlayer", at = @At("RETURN"))
+//    private void onPlayerConnected(Connection connection, ServerPlayer player, CommonListenerCookie i, CallbackInfo ci)
+//    {
+//        CarpetServer.onPlayerLoggedIn(player);
+//    }
 
     @Inject(method = "sendLevelInfo", at = @At("RETURN"))
     private void onLevelChanged(final ServerPlayer serverPlayer, final ServerLevel serverLevel, final CallbackInfo ci)
