@@ -1,2 +1,2 @@
 ## Changelog
-- fixes NullPointerException
+- fix world loading error
