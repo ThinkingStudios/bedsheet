@@ -1,2 +1,3 @@
 ## Changelog
-- fixes NullPointerException
+- remove Entrypoint 
+- rename classes
