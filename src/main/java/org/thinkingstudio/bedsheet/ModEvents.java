@@ -5,6 +5,7 @@ import carpet.network.CarpetClient;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -15,16 +16,16 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import static carpet.script.CarpetEventServer.Event.PLAYER_SWAPS_HANDS;
 
 public class ModEvents {
-    public static void registerEvents(IEventBus modEventBus, IEventBus forgeEventBus) {
-        forgeEventBus.addListener(EventPriority.HIGHEST, RegisterCommandsEvent.class, event -> {
+    public static void registerEvents(IEventBus modEventBus) {
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, RegisterCommandsEvent.class, event -> {
             CarpetServer.registerCarpetCommands(event.getDispatcher(), event.getCommandSelection(), event.getBuildContext());
         });
-        forgeEventBus.addListener(EventPriority.HIGHEST, PlayerEvent.PlayerLoggedInEvent.class, event -> {
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, PlayerEvent.PlayerLoggedInEvent.class, event -> {
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 CarpetServer.onPlayerLoggedIn(serverPlayer);
             }
         });
-        forgeEventBus.addListener(EventPriority.HIGHEST, LivingSwapItemsEvent.Hands.class, event -> {
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, LivingSwapItemsEvent.Hands.class, event -> {
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 if (PLAYER_SWAPS_HANDS.onPlayerEvent(serverPlayer)) {
                     event.isCanceled();
