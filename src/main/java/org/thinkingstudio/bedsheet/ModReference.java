@@ -2,7 +2,7 @@ package org.thinkingstudio.bedsheet;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class BedSheetModReference {
+public class ModReference {
     public static final String MODID = "bedsheet";
     public static final String MODNAME = "BedSheet";
 

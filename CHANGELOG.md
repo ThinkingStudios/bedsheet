@@ -1,2 +1,3 @@
 ## Changelog
-- fix world loading error
+- remove Entrypoint
+- rename classes
