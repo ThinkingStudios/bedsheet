@@ -1,0 +1,37 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "bedsheet"
+version = "${version}"
+displayName = "BedSheet"
+displayURL = "https://github.com/ThinkingStudio/bedsheet"
+credits = "gnembon"
+authors = "TexTrue, ThinkingStudio"
+description = '''
+Carpet unofficial NeoForge port.
+'''
+logoFile = "icon.png"
+displayTest = "IGNORE_SERVER_VERSION"
+
+[[dependencies.bedsheet]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.6,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.bedsheet]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.6,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[mixins]]
+config = "carpet.mixins.json"
+
+[[mixins]]
+config = "bedsheet.mixins.json"

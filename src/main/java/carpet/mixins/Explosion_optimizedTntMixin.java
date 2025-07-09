@@ -85,7 +85,7 @@ public abstract class Explosion_optimizedTntMixin
         }
     }
 
-    @Redirect(method = "hurtEntities",
+    @Redirect(method = "hurtEntities(Ljava/util/List;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;push(Lnet/minecraft/world/phys/Vec3;)V"))
     private void setVelocityAndUpdateLogging(Entity entity, Vec3 velocity)
     {

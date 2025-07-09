@@ -20,14 +20,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class Commands_customCommandsMixin
 {
 
-    @Shadow
-    @Final
-    private CommandDispatcher<CommandSourceStack> dispatcher;
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void onRegister(Commands.CommandSelection commandSelection, CommandBuildContext commandBuildContext, CallbackInfo ci) {
-        CarpetServer.registerCarpetCommands(this.dispatcher, commandSelection, commandBuildContext);
-    }
+    // Use RegisterCommandsEvent with NeoForge
+//    @Shadow
+//    @Final
+//    private CommandDispatcher<CommandSourceStack> dispatcher;
+//
+//    @Inject(method = "<init>", at = @At("RETURN"))
+//    private void onRegister(Commands.CommandSelection commandSelection, CommandBuildContext commandBuildContext, CallbackInfo ci) {
+//        CarpetServer.registerCarpetCommands(this.dispatcher, commandSelection, commandBuildContext);
+//    }
 
     @Inject(method = "performCommand", at = @At("HEAD"))
     private void onExecuteBegin(ParseResults<CommandSourceStack> parseResults, String string, CallbackInfo ci)

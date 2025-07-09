@@ -83,16 +83,16 @@ public class ServerGamePacketListenerImpl_scarpetEventsMixin
         }
     }
 
-    @Inject(method = "handlePlayerAction", cancellable = true, at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/server/level/ServerPlayer;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;",
-            ordinal = 0,
-            shift = At.Shift.BEFORE
-    ))
-    private void onHandSwap(ServerboundPlayerActionPacket playerActionC2SPacket_1, CallbackInfo ci)
-    {
-        if(PLAYER_SWAPS_HANDS.onPlayerEvent(player)) ci.cancel();
-    }
+//    @Inject(method = "handlePlayerAction", cancellable = true, at = @At(
+//            value = "INVOKE",
+//            target = "Lnet/minecraft/server/level/ServerPlayer;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;",
+//            ordinal = 0,
+//            shift = At.Shift.BEFORE
+//    ))
+//    private void onHandSwap(ServerboundPlayerActionPacket playerActionC2SPacket_1, CallbackInfo ci)
+//    {
+//        if(PLAYER_SWAPS_HANDS.onPlayerEvent(player)) ci.cancel();
+//    }
 
     @Inject(method = "handlePlayerAction", cancellable = true, at = @At(
             value = "INVOKE",

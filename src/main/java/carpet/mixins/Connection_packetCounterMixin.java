@@ -35,6 +35,6 @@ public abstract class Connection_packetCounterMixin implements ClientConnectionI
     }
 
     @Override
-    @Accessor //Compat with adventure-platform-fabric
+    @Accessor //Compat with adventure-platform-mod
     public abstract void setChannel(Channel channel);
 }
