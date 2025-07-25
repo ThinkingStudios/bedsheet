@@ -5,14 +5,12 @@ import carpet.network.CarpetClient;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import static carpet.script.CarpetEventServer.Event.PLAYER_SWAPS_HANDS;
 
@@ -38,6 +36,12 @@ public class ModEvents {
             var registrar = event.registrar(ModReference.MODID).optional();
 
             registrar.playBidirectional(CarpetClient.CarpetPayload.TYPE, CarpetClient.CarpetPayload.STREAM_CODEC, (payload, context) -> context.handle(payload));
+        });
+    }
+
+    public static void registerClientEvent(IEventBus modEventBus) {
+        modEventBus.addListener(EventPriority.HIGHEST, RegisterClientPayloadHandlersEvent.class, event -> {
+            event.register(CarpetClient.CarpetPayload.TYPE, (payload, context) -> context.handle(payload));
         });
     }
 }

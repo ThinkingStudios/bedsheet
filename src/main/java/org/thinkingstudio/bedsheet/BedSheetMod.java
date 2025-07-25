@@ -14,5 +14,8 @@ public class BedSheetMod {
         if (FMLLoader.getDist().isDedicatedServer()) {
             CarpetRulePrinter.onInitializeServer();
         }
+        if (FMLLoader.getDist().isClient()) {
+            ModEvents.registerClientEvent(modEventBus);
+        }
     }
 }
